@@ -1,5 +1,7 @@
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -9,22 +11,30 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Reader {
+public class ReaderEQ {
 	
-	public static void ReaderEQ(File XmlFile) {
-	try {
-		// File XmlFile = new File("opencim3sub.xml");
+	File XmlFile;
+	
+	public ReaderEQ(File XmlFile) {
+	this.XmlFile = XmlFile;
+	}
+	
+	public List<NodeList> nodesmaker (File XmlFile) {
 		
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		List<NodeList> nodes = new ArrayList<NodeList>();
 		
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		try { 
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		
-		Document doc = dBuilder.parse(XmlFile);
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			Document doc = dBuilder.parse(XmlFile);
 		
 		
 		// normalize CIM XML file
 		doc.getDocumentElement().normalize();
 		
+				
 		// Lists of the different main nodes needed
 		NodeList baseVoltList = doc.getElementsByTagName("cim:BaseVoltage");
 		NodeList subList = doc.getElementsByTagName("cim:Substation"); 
@@ -39,31 +49,36 @@ public class Reader {
 		NodeList ratioTapChangList = doc.getElementsByTagName("cim:RatioTapChanger");
 		
 		// Extract all the parameters needed (Check voids in the end)
-		extractBaseVoltage (baseVoltList);
-		extractSubstation (subList);
-		extractVoltageLevel (voltList);
-		extractGenerationUnit (genUnitList);
-		extractSyncMach (syncMachList);
-		extractRegControl (regControlList);
-		extractTransformer (transformerList);
-		extractLoad (loadList);
-		extractTransfWinding (transfWindingList);
-		extractBreaker (breakerList);
-		extractRatioTapChang (ratioTapChangList);
+		// List<NodeList> nodes = new ArrayList<>();
+		nodes.add(baseVoltList);
+		nodes.add(subList);
+		nodes.add(voltList);
+		nodes.add(genUnitList);
+		nodes.add(syncMachList);
+		nodes.add(regControlList);
+		nodes.add(transformerList);
+		nodes.add(loadList);
+		nodes.add(transfWindingList);
+		nodes.add(breakerList);
+		nodes.add(ratioTapChangList);
 		
 		
-	}
-	
-	catch(Exception e){
-		e.printStackTrace();
-	}
-	
-	}
+				
+		} catch(Exception e){
+			e.printStackTrace();
+		} 
 
-	public static void extractBaseVoltage (NodeList baseVoltList){
+				
+		return nodes;
+	
+	}
+		
+
+	public List<ArrayList<String>> baseVoltage (NodeList baseVoltList){
 		// Create lists for the parameters needed
-		ArrayList<String> baseVoltID = new ArrayList<String>;
-		ArrayList<String> baseVoltNomValue = new ArrayList<String>;
+		// ArrayList<String> baseVolt = new ArrayList<String>();
+		ArrayList<String> baseVoltID = new ArrayList<String>();
+		ArrayList<String> baseVoltNomValue = new ArrayList<String>();
 		
 		for (int i = 0; i < baseVoltList.getLength(); i++) {
 			Node node = baseVoltList.item(i);
@@ -79,14 +94,20 @@ public class Reader {
 			baseVoltNomValue.add(nominalValue);
 			
 		}
+		
+		List<ArrayList<String>> baseVoltage = new ArrayList<>();
+		baseVoltage.add(baseVoltID);
+		baseVoltage.add(baseVoltNomValue);
+		
+		return baseVoltage;
 	}
 	
-	public static void extractSubstation (NodeList subList){
+	public List<ArrayList<String>> substation (NodeList subList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> subID = new ArrayList<String>;
-		ArrayList<String> subName = new ArrayList<String>;
-		ArrayList<String> subRegion = new ArrayList<String>;
+		ArrayList<String> subID = new ArrayList<String>();
+		ArrayList<String> subName = new ArrayList<String>();
+		ArrayList<String> subRegion = new ArrayList<String>();
 				
 		for (int i = 0; i < subList.getLength(); i++) {
 			Node node = subList.item(i);
@@ -103,15 +124,23 @@ public class Reader {
 			subName.add(name);
 			subRegion.add(region);
 		}
+		
+		List<ArrayList<String>> substation = new ArrayList<>();
+		substation.add(subID);
+		substation.add(subName);
+		substation.add(subRegion);
+		
+		return substation;
+		
 	}
 	
-	public static void extractVoltageLevel (NodeList voltList){
+	public List<ArrayList<String>> voltageLevel (NodeList voltList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> voltID = new ArrayList<String>;
-		ArrayList<String> voltName = new ArrayList<String>;
-		ArrayList<String> voltSub = new ArrayList<String>;
-		ArrayList<String> voltBaseVolt = new ArrayList<String>;
+		ArrayList<String> voltID = new ArrayList<String>();
+		ArrayList<String> voltName = new ArrayList<String>();
+		ArrayList<String> voltSub = new ArrayList<String>();
+		ArrayList<String> voltBaseVolt = new ArrayList<String>();
 				
 		for (int i = 0; i < voltList.getLength(); i++) {
 			Node node = voltList.item(i);
@@ -130,16 +159,25 @@ public class Reader {
 			voltSub.add(voltSubID);
 			voltBaseVolt.add(voltBaseVoltID);
 		}
+		
+		List<ArrayList<String>> voltageLevel = new ArrayList<>();
+		voltageLevel.add(voltID);
+		voltageLevel.add(voltName);
+		voltageLevel.add(voltSub);
+		voltageLevel.add(voltBaseVolt);
+		
+		return voltageLevel;
+		
 	}
 
-	public static void extractGenerationUnit (NodeList genUnitList){
+	public List<ArrayList<String>> generationUnit (NodeList genUnitList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> genUnitID = new ArrayList<String>;
-		ArrayList<String> genUnitName = new ArrayList<String>;
-		ArrayList<String> genUnitMaxP = new ArrayList<String>;
-		ArrayList<String> genUnitMinP = new ArrayList<String>;
-		ArrayList<String> genUnitEquipCont = new ArrayList<String>;
+		ArrayList<String> genUnitID = new ArrayList<String>();
+		ArrayList<String> genUnitName = new ArrayList<String>();
+		ArrayList<String> genUnitMaxP = new ArrayList<String>();
+		ArrayList<String> genUnitMinP = new ArrayList<String>();
+		ArrayList<String> genUnitEquipCont = new ArrayList<String>();
 				
 		for (int i = 0; i < genUnitList.getLength(); i++) { ////////////////////
 			Node node = genUnitList.item(i); //////////////////////
@@ -160,18 +198,27 @@ public class Reader {
 			genUnitMinP.add(minP);
 			genUnitEquipCont.add(genUnitEquipContID);
 		}
+		
+		List<ArrayList<String>> generationUnit = new ArrayList<>();
+		generationUnit.add(genUnitID);
+		generationUnit.add(genUnitName);
+		generationUnit.add(genUnitMaxP);
+		generationUnit.add(genUnitMinP);
+		generationUnit.add(genUnitEquipCont);
+		
+		return generationUnit;
 	}
 
-	public static void extractSyncMach (NodeList syncMachList){
+	public List<ArrayList<String>> syncMach (NodeList syncMachList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> syncMachID = new ArrayList<String>;
-		ArrayList<String> syncMachName = new ArrayList<String>;
-		ArrayList<String> syncMachRatedS = new ArrayList<String>;
-		ArrayList<String> syncMachGenUnit = new ArrayList<String>;
-		ArrayList<String> syncMachRegControl = new ArrayList<String>;
-		ArrayList<String> syncMachEquipCont = new ArrayList<String>;
-		ArrayList<String> syncMachBaseVolt = new ArrayList<String>;
+		ArrayList<String> syncMachID = new ArrayList<String>();
+		ArrayList<String> syncMachName = new ArrayList<String>();
+		ArrayList<String> syncMachRatedS = new ArrayList<String>();
+		ArrayList<String> syncMachGenUnit = new ArrayList<String>();
+		ArrayList<String> syncMachRegControl = new ArrayList<String>();
+		ArrayList<String> syncMachEquipCont = new ArrayList<String>();
+		ArrayList<String> syncMachBaseVolt = new ArrayList<String>();
 				
 		for (int i = 0; i < syncMachList.getLength(); i++) { ////////////////////
 			Node node = syncMachList.item(i); //////////////////////
@@ -196,13 +243,24 @@ public class Reader {
 			syncMachEquipCont.add(equipContID);
 			syncMachBaseVolt.add(baseVoltID);
 		}
+		
+		List<ArrayList<String>> syncMach = new ArrayList<>();
+		syncMach.add(syncMachID);
+		syncMach.add(syncMachName);
+		syncMach.add(syncMachRatedS);
+		syncMach.add(syncMachGenUnit);
+		syncMach.add(syncMachRegControl);
+		syncMach.add(syncMachEquipCont);
+		syncMach.add(syncMachBaseVolt);
+		
+		return syncMach;
 	}
 
-	public static void extractRegControl (NodeList regControlList){
+	public List<ArrayList<String>> regControl (NodeList regControlList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> regControlID = new ArrayList<String>;
-		ArrayList<String> regControlName = new ArrayList<String>;
+		ArrayList<String> regControlID = new ArrayList<String>();
+		ArrayList<String> regControlName = new ArrayList<String>();
 				
 		for (int i = 0; i < regControlList.getLength(); i++) { ////////////////////
 			Node node = regControlList.item(i); //////////////////////
@@ -218,14 +276,20 @@ public class Reader {
 			regControlName.add(name);
 
 		}
+		
+		List<ArrayList<String>> regControl = new ArrayList<>();
+		regControl.add(regControlID);
+		regControl.add(regControlName);
+		
+		return regControl;
 	}	
 	
-	public static void extractTransformer (NodeList transformerList){
+	public List<ArrayList<String>> transformer (NodeList transformerList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> transformerID = new ArrayList<String>;
-		ArrayList<String> transformerName = new ArrayList<String>;
-		ArrayList<String> transformerEquipCont = new ArrayList<String>;
+		ArrayList<String> transformerID = new ArrayList<String>();
+		ArrayList<String> transformerName = new ArrayList<String>();
+		ArrayList<String> transformerEquipCont = new ArrayList<String>();
 				
 		for (int i = 0; i < transformerList.getLength(); i++) { ////////////////////
 			Node node = transformerList.item(i); //////////////////////
@@ -242,15 +306,22 @@ public class Reader {
 			transformerName.add(name);
 			transformerEquipCont.add(equipContID);
 		}
+		
+		List<ArrayList<String>> transformer = new ArrayList<>();
+		transformer.add(transformerID);
+		transformer.add(transformerName);
+		transformer.add(transformerEquipCont);
+		
+		return transformer;
 	}
 	
-	public static void extractLoad (NodeList loadList){
+	public List<ArrayList<String>> load (NodeList loadList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> loadID = new ArrayList<String>;
-		ArrayList<String> loadName = new ArrayList<String>;
-		ArrayList<String> loadEquipCont = new ArrayList<String>;
-		ArrayList<String> loadBaseVolt = new ArrayList<String>;
+		ArrayList<String> loadID = new ArrayList<String>();
+		ArrayList<String> loadName = new ArrayList<String>();
+		ArrayList<String> loadEquipCont = new ArrayList<String>();
+		ArrayList<String> loadBaseVolt = new ArrayList<String>();
 				
 		for (int i = 0; i < loadList.getLength(); i++) { ////////////////////
 			Node node = loadList.item(i); //////////////////////
@@ -269,17 +340,25 @@ public class Reader {
 			loadEquipCont.add(equipContID);
 			loadBaseVolt.add(baseVoltID);
 		}
+		
+		List<ArrayList<String>> load = new ArrayList<>();
+		load.add(loadID);
+		load.add(loadName);
+		load.add(loadEquipCont);
+		load.add(loadBaseVolt);
+		
+		return load;
 	}
 	
-	public static void extractTransfWinding (NodeList transfWindingList){
+	public List<ArrayList<String>> transfWinding (NodeList transfWindingList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> transfWindingID = new ArrayList<String>;
-		ArrayList<String> transfWindingName = new ArrayList<String>;
-		ArrayList<String> transfWindingR = new ArrayList<String>;
-		ArrayList<String> transfWindingX = new ArrayList<String>;
-		ArrayList<String> transfWindingTransf = new ArrayList<String>;
-		ArrayList<String> transfWindingBaseVolt = new ArrayList<String>;
+		ArrayList<String> transfWindingID = new ArrayList<String>();
+		ArrayList<String> transfWindingName = new ArrayList<String>();
+		ArrayList<String> transfWindingR = new ArrayList<String>();
+		ArrayList<String> transfWindingX = new ArrayList<String>();
+		ArrayList<String> transfWindingTransf = new ArrayList<String>();
+		ArrayList<String> transfWindingBaseVolt = new ArrayList<String>();
 				
 		for (int i = 0; i < transfWindingList.getLength(); i++) { ////////////////////
 			Node node = transfWindingList.item(i); //////////////////////
@@ -302,16 +381,26 @@ public class Reader {
 			transfWindingTransf.add(transformerID);
 			transfWindingBaseVolt.add(baseVoltID);
 		}
+		
+		List<ArrayList<String>> transfWinding = new ArrayList<>();
+		transfWinding.add(transfWindingID);
+		transfWinding.add(transfWindingName);
+		transfWinding.add(transfWindingR);
+		transfWinding.add(transfWindingX);
+		transfWinding.add(transfWindingTransf);
+		transfWinding.add(transfWindingBaseVolt);
+		
+		return transfWinding;
 	}
 	
-	public static void extractBreaker (NodeList breakerList){
+	public List<ArrayList<String>> breaker (NodeList breakerList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> breakerID = new ArrayList<String>;
-		ArrayList<String> breakerName = new ArrayList<String>;
-		ArrayList<String> breakerOpen = new ArrayList<String>;
-		ArrayList<String> breakerEquipCont = new ArrayList<String>;
-		ArrayList<String> breakerBaseVolt = new ArrayList<String>;
+		ArrayList<String> breakerID = new ArrayList<String>();
+		ArrayList<String> breakerName = new ArrayList<String>();
+		ArrayList<String> breakerOpen = new ArrayList<String>();
+		ArrayList<String> breakerEquipCont = new ArrayList<String>();
+		ArrayList<String> breakerBaseVolt = new ArrayList<String>();
 				
 		for (int i = 0; i < breakerList.getLength(); i++) { ////////////////////
 			Node node = breakerList.item(i); //////////////////////
@@ -332,14 +421,23 @@ public class Reader {
 			breakerEquipCont.add(equipContID);
 			breakerBaseVolt.add(baseVoltID);
 		}
+		
+		List<ArrayList<String>> breaker = new ArrayList<>();
+		breaker.add(breakerID);
+		breaker.add(breakerName);
+		breaker.add(breakerOpen);
+		breaker.add(breakerEquipCont);
+		breaker.add(breakerBaseVolt);
+		
+		return breaker;
 	}	
 	
-	public static void extractRatioTapChang (NodeList ratioTapChangList){
+	public List<ArrayList<String>> ratioTapChang (NodeList ratioTapChangList){
 		
 		// Create lists for the parameters needed
-		ArrayList<String> ratioTapChangID = new ArrayList<String>;
-		ArrayList<String> ratioTapChangName = new ArrayList<String>;
-		ArrayList<String> ratioTapChangStep = new ArrayList<String>;
+		ArrayList<String> ratioTapChangID = new ArrayList<String>();
+		ArrayList<String> ratioTapChangName = new ArrayList<String>();
+		ArrayList<String> ratioTapChangStep = new ArrayList<String>();
 				
 		for (int i = 0; i < ratioTapChangList.getLength(); i++) { ////////////////////
 			Node node = ratioTapChangList.item(i); //////////////////////
@@ -356,9 +454,16 @@ public class Reader {
 			ratioTapChangName.add(name);
 			ratioTapChangStep.add(step);
 		}
+		
+		List<ArrayList<String>> ratioTapChang = new ArrayList<>();
+		ratioTapChang.add(ratioTapChangID);
+		ratioTapChang.add(ratioTapChangName);
+		ratioTapChang.add(ratioTapChangStep);
+		
+		return ratioTapChang;
 	}
 	
-	public static String getAttributesFromChildren (Element eElement, String childNode) {
+	public String getAttributesFromChildren (Element eElement, String childNode) {
 		
 		for (int i = 0; i < eElement.getChildNodes().getLength(); i++) { // "for" with all the children nodes of the main node
 			
@@ -374,6 +479,9 @@ public class Reader {
 		return childNode;
 		
 	}
+
+	
+
 }
 	
 
