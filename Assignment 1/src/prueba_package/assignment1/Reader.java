@@ -1,3 +1,4 @@
+package assignment1;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ReaderEQ {
+public class Reader {
 	
 	File XmlFile;
 	
-	public ReaderEQ(File XmlFile) {
+	public Reader(File XmlFile) {
 	this.XmlFile = XmlFile;
 	}
 	
