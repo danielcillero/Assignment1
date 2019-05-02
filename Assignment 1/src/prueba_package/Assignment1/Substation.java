@@ -7,10 +7,10 @@ public class Substation {
 	String name;
 	String regionID;
 	
-	public Substation(Element substation) {
-		this.ID = substation.getAttribute("rdf:ID");
-		this.name = substation.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
-		this.regionID = getAttributesFromChildren(substation,"cim:Substation.Region");
+	public Substation(Element substationEQ) {
+		this.ID = substationEQ.getAttribute("rdf:ID");
+		this.name = substationEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
+		this.regionID = getAttributesFromChildren(substationEQ,"cim:Substation.Region");
 	}
 	
 	

@@ -6,24 +6,18 @@ public class PowerTransformerEnd {
 	
 	String ID;
 	String name;
-	Double ratedS;
-	Double P;
-	Double Q;
-	String genUnitID;
-	String regControlID;
-	String equipContID;
+	Double R;
+	Double X;
+	String transformerID;
 	String baseVoltID;
 	
-	public SyncMachine(Element syncMachEQ, Element syncMachSSH, NodeList voltLevel) {
-		this.ID = syncMachEQ.getAttribute("rdf:ID");
-		this.name = syncMachEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
-		this.ratedS = Double.parseDouble(syncMachEQ.getElementsByTagName("cim:RotatingMachine.ratedS").item(0).getTextContent());
-		this.P = Double.parseDouble(syncMachSSH.getElementsByTagName("cim:RotatingMachine.p").item(0).getTextContent());
-		this.Q = Double.parseDouble(syncMachSSH.getElementsByTagName("cim:RotatingMachine.q").item(0).getTextContent());
-		this.genUnitID = getAttributesFromChildren(syncMachEQ,"cim:RotatingMachine.GeneratingUnit");
-		this.regControlID = getAttributesFromChildren(syncMachEQ,"cim:RegulatingCondEq.RegulatingControl");
-		this.equipContID = getAttributesFromChildren(syncMachEQ,"cim:Equipment.EquipmentContainer");
-		this.baseVoltID = rdfBaseVolt(voltLevel,equipContID);
+	public PowerTransformerEnd(Element powerTransformerEndEQ) {
+		this.ID = powerTransformerEndEQ.getAttribute("rdf:ID");
+		this.name = powerTransformerEndEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
+		this.R = Double.parseDouble(powerTransformerEndEQ.getElementsByTagName("cim:PowerTransformerEnd.r").item(0).getTextContent());
+		this.X = Double.parseDouble(powerTransformerEndEQ.getElementsByTagName("cim:PowerTransformerEnd.x").item(0).getTextContent());
+		this.transformerID = getAttributesFromChildren(powerTransformerEndEQ,"cim:PowerTransformerEnd.PowerTransformer");
+		this.baseVoltID = getAttributesFromChildren(powerTransformerEndEQ,"cim:TransformerEnd.BaseVoltage");
 	}
 	
 	
@@ -45,34 +39,4 @@ public class PowerTransformerEnd {
 		
 	}
 	
-	public String rdfBaseVolt (NodeList voltageLevel, String parentNode) {
-		
-		String rdfBaseVolt = "There is no coincidence";
-		
-		for (int i = 0; i < voltageLevel.getLength(); i++) { ////////////////////
-			Node voltNode = voltageLevel.item(i); //////////////////////
-		
-			Element voltElement = (Element) voltNode;
-			
-			String rdfIDvolt = voltElement.getAttribute("rdf:ID");
-			
-			if (rdfIDvolt.equals(parentNode)) {
-				
-				for (int j = 0; j < voltElement.getChildNodes().getLength(); j++) { // "for" with all the children nodes of the main node
-					
-					if (voltElement.getChildNodes().item(j).getNodeName() == "cim:VoltageLevel.BaseVoltage") { 
-						
-						Element outputElement = (Element) voltElement.getChildNodes().item(j); // New element with this node
-												
-						rdfBaseVolt = outputElement.getAttribute("rdf:resource").substring(1); // Without # because of the substring(1), it deletes the first character
-						
-					}
-					
-				}
-								
-			}
-			
-		}
-		return rdfBaseVolt;
-	}
 }

@@ -7,11 +7,11 @@ public class VoltageLevel {
 	String substationID;
 	String baseVoltageID;
 	
-	public VoltageLevel(Element voltageLevel) {
-		this.ID = voltageLevel.getAttribute("rdf:ID");
-		this.name = voltageLevel.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
-		this.substationID = getAttributesFromChildren(voltageLevel,"cim:VoltageLevel.Substation");
-		this.baseVoltageID = getAttributesFromChildren(voltageLevel,"cim:VoltageLevel.BaseVoltage");
+	public VoltageLevel(Element voltageLevelEQ) {
+		this.ID = voltageLevelEQ.getAttribute("rdf:ID");
+		this.name = voltageLevelEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
+		this.substationID = getAttributesFromChildren(voltageLevelEQ,"cim:VoltageLevel.Substation");
+		this.baseVoltageID = getAttributesFromChildren(voltageLevelEQ,"cim:VoltageLevel.BaseVoltage");
 	}
 	
 	

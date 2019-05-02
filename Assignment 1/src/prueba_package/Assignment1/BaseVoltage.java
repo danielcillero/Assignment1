@@ -13,7 +13,5 @@ public class BaseVoltage {
 		this.nominalValue = baseVoltageEQ.getElementsByTagName("cim:BaseVoltage.nominalVoltage").item(0).getTextContent();
 
 		}
-		
-	}
-
 }
+

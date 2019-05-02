@@ -9,14 +9,13 @@ public class GeneratingUnit {
 	Double minP;
 	String equipContID;
 	
-	public GeneratingUnit(Element generatingUnit) {
-		this.ID = generatingUnit.getAttribute("rdf:ID");
-		this.name = generatingUnit.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
-		this.maxP = Double.parseDouble(generatingUnit.getElementsByTagName("cim:GeneratingUnit.maxOperatingP").item(0).getTextContent());
-		this.minP = Double.parseDouble(generatingUnit.getElementsByTagName("cim:GeneratingUnit.minOperatingP").item(0).getTextContent());
-		this.equipContID = getAttributesFromChildren(generatingUnit,"cim:Equipment.EquipmentContainer");
+	public GeneratingUnit(Element generatingUnitEQ) {
+		this.ID = generatingUnitEQ.getAttribute("rdf:ID");
+		this.name = generatingUnitEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
+		this.maxP = Double.parseDouble(generatingUnitEQ.getElementsByTagName("cim:GeneratingUnit.maxOperatingP").item(0).getTextContent());
+		this.minP = Double.parseDouble(generatingUnitEQ.getElementsByTagName("cim:GeneratingUnit.minOperatingP").item(0).getTextContent());
+		this.equipContID = getAttributesFromChildren(generatingUnitEQ,"cim:Equipment.EquipmentContainer");
 	}
-	
 	
 	
 	public String getAttributesFromChildren (Element eElement, String childNode) {

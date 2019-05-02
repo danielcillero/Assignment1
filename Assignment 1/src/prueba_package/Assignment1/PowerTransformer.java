@@ -6,10 +6,10 @@ public class PowerTransformer {
 	String name;
 	String equipContID;
 	
-	public PowerTransformer(Element powerTransformer) {
-		this.ID = powerTransformer.getAttribute("rdf:ID");
-		this.name = powerTransformer.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
-		this.equipContID = getAttributesFromChildren(powerTransformer,"cim:Equipment.EquipmentContainer");
+	public PowerTransformer(Element powerTransformerEQ) {
+		this.ID = powerTransformerEQ.getAttribute("rdf:ID");
+		this.name = powerTransformerEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
+		this.equipContID = getAttributesFromChildren(powerTransformerEQ,"cim:Equipment.EquipmentContainer");
 	}
 	
 	public String getAttributesFromChildren (Element eElement, String childNode) {
