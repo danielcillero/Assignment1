@@ -29,6 +29,8 @@ public class Main {
 		NodeList transfWindingListEQ = EQ.nodes.get(8);
 		NodeList breakerListEQ = EQ.nodes.get(9);
 		NodeList ratioTapChangListEQ = EQ.nodes.get(10);
+		NodeList terminalListEQ = EQ.nodes.get(11);
+		NodeList connectivityNodeListEQ = EQ.nodes.get(12);
 		
 		// SSH NodeLists
 		NodeList syncMachListSSH = SSH.nodes.get(0);
@@ -191,7 +193,7 @@ public class Main {
 					
 					System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
 										
-					EnergyConsumerLoad load = new EnergyConsumerLoad(eElementEQ,eElementSSH);
+					EnergyConsumerLoad load = new EnergyConsumerLoad(eElementEQ,eElementSSH,voltListEQ);
 					
 					loadList.add(load);
 					
@@ -224,7 +226,7 @@ public class Main {
 			Node node = breakerListEQ.item(i);
 			Element eElementEQ = (Element) node;
 			
-			Breaker breaker = new Breaker(eElementEQ);
+			Breaker breaker = new Breaker(eElementEQ,voltListEQ);
 			
 			breakerList.add(breaker);
 			
@@ -245,7 +247,39 @@ public class Main {
 			
 		}
 		
+		// Terminal
+		
+		ArrayList<Terminal> terminalList = new ArrayList<>();
+		
+		for (int i=0 ; i < terminalListEQ.getLength() ; i++) {
+			
+			Node node = terminalListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			Terminal termin = new Terminal(eElementEQ);
+			
+			terminalList.add(termin);
+			
+		}
+		
+		// Connectivity Nodes
+		
+		ArrayList<ConnectivityNode> conNodeList = new ArrayList<>();
+		
+		for (int i=0 ; i < connectivityNodeListEQ.getLength() ; i++) {
+			
+			Node node = connectivityNodeListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			ConnectivityNode conNode = new ConnectivityNode(eElementEQ,voltListEQ);
+			
+			conNodeList.add(conNode);
+			
+		}	
+		
 		// Try to see if it works
+		
+		showList(ratioTapChangerList,0);
 		
 		System.out.println("For the SyncMach with ID " + syncMachList.get(0).ID + " the ID of the VoltageLevel is " + 
 					syncMachList.get(0).equipContID + " and the base voltage ID is " + syncMachList.get(0).baseVoltID);

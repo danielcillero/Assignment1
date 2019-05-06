@@ -46,6 +46,8 @@ public class Reader {
 		NodeList transfWindingList = doc.getElementsByTagName("cim:PowerTransformerEnd");
 		NodeList breakerList = doc.getElementsByTagName("cim:Breaker");
 		NodeList ratioTapChangList = doc.getElementsByTagName("cim:RatioTapChanger");
+		NodeList terminalList = doc.getElementsByTagName("cim:Terminal");
+		NodeList connectivityNodeList = doc.getElementsByTagName("cim:ConnectivityNode");
 		
 		// Extract all the parameters needed (Check voids in the end)
 		// List<NodeList> nodes = new ArrayList<>();
@@ -60,6 +62,8 @@ public class Reader {
 		nodes.add(transfWindingList);
 		nodes.add(breakerList);
 		nodes.add(ratioTapChangList);
+		nodes.add(terminalList);
+		nodes.add(connectivityNodeList);
 		
 		} else if (EqSsh == "SSH") {
 			// Lists of the different main nodes needed
