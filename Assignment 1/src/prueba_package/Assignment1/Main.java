@@ -1,4 +1,4 @@
-package pack;
+package assignment1; /////////////
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,8 +7,25 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Main {
+import assignment1.ACLineSegment;
+import assignment1.BaseVoltage;
+import assignment1.Breaker;
+import assignment1.BusBarSection;
+import assignment1.ConnectivityNode;
+import assignment1.EnergyConsumerLoad;
+import assignment1.GeneratingUnit;
+import assignment1.PowerTransformer;
+import assignment1.PowerTransformerEnd;
+import assignment1.RatioTapChanger;
+import assignment1.Reader;
+import assignment1.RegulatingControl;
+import assignment1.ShuntCompensator;
+import assignment1.Substation;
+import assignment1.SyncMachine;
+import assignment1.Terminal;
+import assignment1.VoltageLevel;
 
+public class Main {
 	public static void main(String[] args) {
 		
 		File EQFile = new File("Assignment_EQ_reduced.xml");
@@ -31,6 +48,9 @@ public class Main {
 		NodeList ratioTapChangListEQ = EQ.nodes.get(10);
 		NodeList terminalListEQ = EQ.nodes.get(11);
 		NodeList connectivityNodeListEQ = EQ.nodes.get(12);
+		NodeList shuntCompensatorListEQ = EQ.nodes.get(13);
+		NodeList lineSegmentACListEQ = EQ.nodes.get(14);
+		NodeList busbarListEQ = EQ.nodes.get(15);
 		
 		// SSH NodeLists
 		NodeList syncMachListSSH = SSH.nodes.get(0);
@@ -277,15 +297,60 @@ public class Main {
 			
 		}	
 		
-		// Try to see if it works
+		// Linear Shunt Compensators
 		
-		showList(ratioTapChangerList,0);
+		ArrayList<ShuntCompensator> shuntCompensatorList = new ArrayList<>();
+		
+		for (int i=0 ; i < shuntCompensatorListEQ.getLength() ; i++) {
+			
+			Node node = shuntCompensatorListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			ShuntCompensator shunt = new ShuntCompensator(eElementEQ);
+			
+			shuntCompensatorList.add(shunt);
+			
+		}		
+		
+		// AC Line Segment
+		
+		ArrayList<ACLineSegment> lineSegmentList = new ArrayList<>();
+		
+		for (int i=0 ; i < lineSegmentACListEQ.getLength() ; i++) {
+			
+			Node node = lineSegmentACListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			ACLineSegment shunt = new ACLineSegment(eElementEQ);
+			
+			lineSegmentList.add(shunt);
+			
+		}
+		
+		// BusBar Section
+		
+		ArrayList<BusBarSection> busbarList = new ArrayList<>();
+		
+		for (int i=0 ; i < busbarListEQ.getLength() ; i++) {
+			
+			Node node = busbarListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			BusBarSection busbar = new BusBarSection(eElementEQ);
+			
+			busbarList.add(busbar);
+			
+		}
+		
+		// Try to see if it works
 		
 		System.out.println("For the SyncMach with ID " + syncMachList.get(0).ID + " the ID of the VoltageLevel is " + 
 					syncMachList.get(0).equipContID + " and the base voltage ID is " + syncMachList.get(0).baseVoltID);
 		
 		
-		// equipcont _4ba71b59-ee2f-450b-9f7d-cc2f1cc5e386 base voltage is _862a4658-6b03-4550-9de2-b5c413912b75
+		// Topology
+		
+		
 
 	}
 

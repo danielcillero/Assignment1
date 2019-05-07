@@ -1,3 +1,4 @@
+package assignment1; /////////////
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -10,7 +11,7 @@ public class BaseVoltage {
 		
 	public BaseVoltage(Element baseVoltageEQ) {
 		this.ID = baseVoltageEQ.getAttribute("rdf:ID");
-		this.nominalValue = baseVoltageEQ.getElementsByTagName("cim:BaseVoltage.nominalVoltage").item(0).getTextContent();
+		this.nominalValue = Double.parseDouble(baseVoltageEQ.getElementsByTagName("cim:BaseVoltage.nominalVoltage").item(0).getTextContent());
 
 		}
 }

@@ -2,20 +2,15 @@ package assignment1; /////////////
 
 import org.w3c.dom.Element;
 
-public class Terminal {
+public class BusBarSection {
+	
 	String ID;
-	Double sequenceNumber;
-	String ConductingEquipment;
-	String ConnectivityNode;
+	String equipContID;
 	
-	public Terminal(Element terminalEQ) {
-		this.ID = terminalEQ.getAttribute("rdf:ID");
-		this.sequenceNumber = Double.parseDouble(terminalEQ.getElementsByTagName("cim:ACDCTerminal.sequenceNumber").item(0).getTextContent());
-		this.ConductingEquipment = getAttributesFromChildren(terminalEQ,"cim:Terminal.ConductingEquipment");
-		this.ConnectivityNode = getAttributesFromChildren(terminalEQ,"cim:Terminal.ConnectivityNode");
-	}
-	
-	
+	public BusBarSection(Element busBarEQ) {
+		this.ID = busBarEQ.getAttribute("rdf:ID");
+		this.equipContID = getAttributesFromChildren(busBarEQ,"cim:Equipment.EquipmentContainer");
+	}	
 	
 	public String getAttributesFromChildren (Element eElement, String childNode) {
 		
@@ -30,8 +25,7 @@ public class Terminal {
 			}
 			
 		}
-		return childNode;
-		
-	}	
+		return childNode;		
+	}
 
 }

@@ -1,4 +1,4 @@
-package tryReader;
+package assignment1; /////////////
 
 import org.w3c.dom.Element;
 

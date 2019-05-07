@@ -1,4 +1,4 @@
-package tryReader;
+package assignment1; /////////////
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,6 +48,9 @@ public class Reader {
 		NodeList ratioTapChangList = doc.getElementsByTagName("cim:RatioTapChanger");
 		NodeList terminalList = doc.getElementsByTagName("cim:Terminal");
 		NodeList connectivityNodeList = doc.getElementsByTagName("cim:ConnectivityNode");
+		NodeList shuntCompensatorList = doc.getElementsByTagName("cim:LinearShuntCompensator");
+		NodeList acLineList = doc.getElementsByTagName("cim:ACLineSegment");
+		NodeList busbarList = doc.getElementsByTagName("cim:BusbarSection");
 		
 		// Extract all the parameters needed (Check voids in the end)
 		// List<NodeList> nodes = new ArrayList<>();
