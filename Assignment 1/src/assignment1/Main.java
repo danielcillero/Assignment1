@@ -403,10 +403,11 @@ public class Main {
 				if (trans.ID.equals(wind.transformerID)) {
 					
 					System.out.println("Winding works"); // For testing
+					System.out.println(wind.TerminalID);
 			
 					for (Terminal terminal1:terminalList) {
 				
-						if (wind.ID.equals(terminal1.ConductingEquipment)) {
+						if (wind.TerminalID.equals(terminal1.ID)) {
 							
 							System.out.println("terminal 1"); // For testing
 				
@@ -484,8 +485,8 @@ public class Main {
 		}
 		
 		
-		
 
 	}
 
 }
+
