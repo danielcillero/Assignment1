@@ -9,6 +9,7 @@ public class ACLineSegment {
 	Double R;
 	Double X;
 	Double bch; // Susceptance
+	int prueba;
 	
 	public ACLineSegment(Element lineSegmentEQ) {
 		this.ID = lineSegmentEQ.getAttribute("rdf:ID");
