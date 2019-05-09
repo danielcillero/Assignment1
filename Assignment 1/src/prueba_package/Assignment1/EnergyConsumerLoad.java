@@ -16,8 +16,8 @@ public class EnergyConsumerLoad {
 	public EnergyConsumerLoad(Element energyConsumerLoadEQ, Element energyConsumerLoadSSH, NodeList voltLevel) {
 		this.ID = energyConsumerLoadEQ.getAttribute("rdf:ID");
 		this.name = energyConsumerLoadEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
-		this.P = Double.parseDouble(energyConsumerLoadSSH.getElementsByTagName("cim:RotatingMachine.p").item(0).getTextContent());
-		this.Q = Double.parseDouble(energyConsumerLoadSSH.getElementsByTagName("cim:RotatingMachine.q").item(0).getTextContent());
+		this.P = Double.parseDouble(energyConsumerLoadSSH.getElementsByTagName("cim:EnergyConsumer.p").item(0).getTextContent());
+		this.Q = Double.parseDouble(energyConsumerLoadSSH.getElementsByTagName("cim:EnergyConsumer.q").item(0).getTextContent());
 		this.equipContID = getAttributesFromChildren(energyConsumerLoadEQ,"cim:Equipment.EquipmentContainer");
 		this.baseVoltID = rdfBaseVolt(voltLevel,equipContID);
 	}

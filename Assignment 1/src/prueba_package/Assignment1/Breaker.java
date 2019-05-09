@@ -15,7 +15,7 @@ public class Breaker {
 	public Breaker(Element breakerEQ, NodeList voltLevel) {
 		this.ID = breakerEQ.getAttribute("rdf:ID");
 		this.name = breakerEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
-		this.NormallyOpen = Boolean.parseBoolean(breakerEQ.getElementsByTagName("cim:RotatingMachine.ratedS").item(0).getTextContent());
+		this.NormallyOpen = Boolean.parseBoolean(breakerEQ.getElementsByTagName("cim:Switch.normalOpen").item(0).getTextContent());
 		this.equipContID = getAttributesFromChildren(breakerEQ,"cim:Equipment.EquipmentContainer");
 		this.baseVoltID = rdfBaseVolt(voltLevel,equipContID);
 	}

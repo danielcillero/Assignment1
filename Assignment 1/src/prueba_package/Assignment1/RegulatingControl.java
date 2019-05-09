@@ -13,7 +13,7 @@ public class RegulatingControl {
 	public RegulatingControl(Element regulatingControlEQ, Element regulatingControlSSH) {
 		this.ID = regulatingControlEQ.getAttribute("rdf:ID");
 		this.name = regulatingControlEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
-		this.targetValue = Double.parseDouble(regulatingControlSSH.getElementsByTagName("cim:RotatingMachine.ratedS").item(0).getTextContent());
+		this.targetValue = Double.parseDouble(regulatingControlSSH.getElementsByTagName("cim:RegulatingControl.targetValue").item(0).getTextContent());
 	}
 
 }

@@ -67,6 +67,11 @@ public class Reader {
 		nodes.add(ratioTapChangList);
 		nodes.add(terminalList);
 		nodes.add(connectivityNodeList);
+		nodes.add(shuntCompensatorList);
+		nodes.add(acLineList);
+		nodes.add(busbarList);
+		
+		
 		
 		} else if (EqSsh == "SSH") {
 			// Lists of the different main nodes needed
