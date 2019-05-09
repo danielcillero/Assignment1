@@ -7,24 +7,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import assignment1.ACLineSegment;
-import assignment1.BaseVoltage;
-import assignment1.Breaker;
-import assignment1.BusBarSection;
-import assignment1.ConnectivityNode;
-import assignment1.EnergyConsumerLoad;
-import assignment1.GeneratingUnit;
-import assignment1.PowerTransformer;
-import assignment1.PowerTransformerEnd;
-import assignment1.RatioTapChanger;
-import assignment1.Reader;
-import assignment1.RegulatingControl;
-import assignment1.ShuntCompensator;
-import assignment1.Substation;
-import assignment1.SyncMachine;
-import assignment1.Terminal;
-import assignment1.VoltageLevel;
-
 public class Main {
 	public static void main(String[] args) {
 		
@@ -136,7 +118,7 @@ public class Main {
 				
 				if (rdfID.equals(rdfSSH)) {
 					
-					System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
+					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
 										
 					SyncMachine symach = new SyncMachine(eElementEQ,eElementSSH,voltListEQ);
 					
@@ -166,7 +148,7 @@ public class Main {
 				
 				if (rdfID.equals(rdfSSH)) {
 					
-					System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
+					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
 										
 					RegulatingControl regControl = new RegulatingControl(eElementEQ,eElementSSH);
 					
@@ -211,7 +193,7 @@ public class Main {
 				
 				if (rdfID.equals(rdfSSH)) {
 					
-					System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
+					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
 										
 					EnergyConsumerLoad load = new EnergyConsumerLoad(eElementEQ,eElementSSH,voltListEQ);
 					
@@ -251,7 +233,7 @@ public class Main {
 			breakerList.add(breaker);
 			
 		}
-		
+				
 		// Ratio Tap Changer (Step)
 		
 		ArrayList<RatioTapChanger> ratioTapChangerList = new ArrayList<>();
@@ -321,9 +303,9 @@ public class Main {
 			Node node = lineSegmentACListEQ.item(i);
 			Element eElementEQ = (Element) node;
 			
-			ACLineSegment shunt = new ACLineSegment(eElementEQ);
+			ACLineSegment line = new ACLineSegment(eElementEQ);
 			
-			lineSegmentList.add(shunt);
+			lineSegmentList.add(line);
 			
 		}
 		
@@ -344,11 +326,163 @@ public class Main {
 		
 		// Try to see if it works
 		
-		System.out.println("For the SyncMach with ID " + syncMachList.get(0).ID + " the ID of the VoltageLevel is " + 
-					syncMachList.get(0).equipContID + " and the base voltage ID is " + syncMachList.get(0).baseVoltID);
+	//	System.out.println("For the SyncMach with ID " + syncMachList.get(0).ID + " the ID of the VoltageLevel is " + 
+	//				syncMachList.get(0).equipContID + " and the base voltage ID is " + syncMachList.get(0).baseVoltID);
 		
 		
 		// Topology
+		
+		ArrayList<Topology> topologyElements = new ArrayList<>();
+		
+		for (ACLineSegment line:lineSegmentList) {
+			
+			ArrayList<String> busIDs = new ArrayList<>();
+			
+			for (Terminal terminal1:terminalList) {
+				
+				if (line.ID.equals(terminal1.ConductingEquipment)) {
+				
+					for (ConnectivityNode node1:conNodeList) {
+						
+						if (terminal1.ConnectivityNode.equals(node1.ID)) {
+						
+							for (Terminal terminal2:terminalList) {
+								
+								if (node1.ID.equals(terminal2.ConnectivityNode) && !terminal2.equals(terminal1)) { // The ! symbol makes the negative
+									
+									for (Breaker breaker:breakerList) {
+										
+										if (terminal2.ConductingEquipment.equals(breaker.ID)) {
+										
+											for (Terminal terminal3:terminalList) {
+												
+												if (breaker.ID.equals(terminal3.ConductingEquipment) && !terminal3.equals(terminal1) 
+														&& !terminal3.equals(terminal2)) {
+													
+													for (ConnectivityNode node2:conNodeList) {
+														
+														if (node2.ID.equals(terminal3.ConnectivityNode)) {
+															
+															for (Terminal terminal4:terminalList) {
+																
+																if (terminal4.ConnectivityNode.equals(node2.ID) && !terminal4.equals(terminal1) 
+																		&& !terminal4.equals(terminal2) && !terminal4.equals(terminal3)) {
+																	
+																	for (BusBarSection busbar:busbarList) {
+																		
+																		if (terminal4.ConductingEquipment.equals(busbar.ID)) {
+																			
+																			busIDs.add(busbar.ID);
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}								
+							}
+						}
+					}
+				}
+			}
+			
+			Topology topo = new Topology("AC Line", line.ID, busIDs.get(0), busIDs.get(1));
+			topologyElements.add(topo);
+		}
+		
+		for (PowerTransformer trans:powerTransformerList) {
+			
+			ArrayList<String> busIDs = new ArrayList<>();
+			
+			for (PowerTransformerEnd wind:powerTransformerEndList) {
+				
+				if (trans.ID.equals(wind.transformerID)) {
+					
+					System.out.println("Winding works"); // For testing
+			
+					for (Terminal terminal1:terminalList) {
+				
+						if (wind.ID.equals(terminal1.ConductingEquipment)) {
+							
+							System.out.println("terminal 1"); // For testing
+				
+							for (ConnectivityNode node1:conNodeList) {
+						
+								if (terminal1.ConnectivityNode.equals(node1.ID)) {
+									
+									System.out.println("node1 works"); // For testing
+						
+									for (Terminal terminal2:terminalList) {
+								
+										if (node1.ID.equals(terminal2.ConnectivityNode) && !terminal2.equals(terminal1)) { // The ! symbol makes the negative
+									
+											System.out.println("terminal2 works"); // For testing
+											
+											for (Breaker breaker:breakerList) {
+												
+												
+										
+												if (terminal2.ConductingEquipment.equals(breaker.ID)) {
+										
+													for (Terminal terminal3:terminalList) {
+												
+														if (breaker.ID.equals(terminal3.ConductingEquipment) && !terminal3.equals(terminal1) 
+																&& !terminal3.equals(terminal2)) {
+													
+															for (ConnectivityNode node2:conNodeList) {
+														
+																if (node2.ID.equals(terminal3.ConnectivityNode)) {
+															
+																	for (Terminal terminal4:terminalList) {
+																
+																		if (terminal4.ConnectivityNode.equals(node2.ID) && !terminal4.equals(terminal1) 
+																				&& !terminal4.equals(terminal2) && !terminal4.equals(terminal3)) {
+																	
+																			for (BusBarSection busbar:busbarList) {
+																		
+																				if (terminal4.ConductingEquipment.equals(busbar.ID)) {
+																			
+																					busIDs.add(busbar.ID);
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												} else {
+													
+													for (BusBarSection busbar:busbarList) {
+														
+														if (terminal2.ConductingEquipment.equals(busbar.ID)) {
+													
+															busIDs.add(busbar.ID); 
+														}
+													}
+												}
+											}
+										}								
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			Topology topo = new Topology("Transformer", trans.ID, busIDs.get(0), busIDs.get(1));
+			topologyElements.add(topo);
+		}
+		
+		for (Topology topo:topologyElements) {
+			System.out.println("The " + topo.Type + " which ID is " + topo.ID + " is connected to the busbar " + topo.IDBusBar1 + " and " + topo.IDBusBar2 + "\n");
+		}
+		
 		
 		
 
