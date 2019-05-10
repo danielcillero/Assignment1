@@ -10,6 +10,8 @@ public class PowerTransformerEnd {
 	String name;
 	Double R;
 	Double X;
+	Double b;
+	Double g;
 	String transformerID;
 	String baseVoltID;
 	String TerminalID;
@@ -19,6 +21,8 @@ public class PowerTransformerEnd {
 		this.name = powerTransformerEndEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
 		this.R = Double.parseDouble(powerTransformerEndEQ.getElementsByTagName("cim:PowerTransformerEnd.r").item(0).getTextContent());
 		this.X = Double.parseDouble(powerTransformerEndEQ.getElementsByTagName("cim:PowerTransformerEnd.x").item(0).getTextContent());
+		this.b = Double.parseDouble(powerTransformerEndEQ.getElementsByTagName("cim:PowerTransformerEnd.b").item(0).getTextContent());
+		this.g = Double.parseDouble(powerTransformerEndEQ.getElementsByTagName("cim:PowerTransformerEnd.g").item(0).getTextContent());
 		this.transformerID = getAttributesFromChildren(powerTransformerEndEQ,"cim:PowerTransformerEnd.PowerTransformer");
 		this.baseVoltID = getAttributesFromChildren(powerTransformerEndEQ,"cim:TransformerEnd.BaseVoltage");
 		this.TerminalID = getAttributesFromChildren(powerTransformerEndEQ,"cim:TransformerEnd.Terminal");

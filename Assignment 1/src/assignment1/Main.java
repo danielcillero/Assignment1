@@ -332,158 +332,77 @@ public class Main {
 		
 		// Topology
 		
-		ArrayList<Topology> topologyElements = new ArrayList<>();
+		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, powerTransformerList, powerTransformerEndList);
 		
-		for (ACLineSegment line:lineSegmentList) {
-			
-			ArrayList<String> busIDs = new ArrayList<>();
-			
-			for (Terminal terminal1:terminalList) {
-				
-				if (line.ID.equals(terminal1.ConductingEquipment)) {
-				
-					for (ConnectivityNode node1:conNodeList) {
-						
-						if (terminal1.ConnectivityNode.equals(node1.ID)) {
-						
-							for (Terminal terminal2:terminalList) {
-								
-								if (node1.ID.equals(terminal2.ConnectivityNode) && !terminal2.equals(terminal1)) { // The ! symbol makes the negative
-									
-									for (Breaker breaker:breakerList) {
-										
-										if (terminal2.ConductingEquipment.equals(breaker.ID)) {
-										
-											for (Terminal terminal3:terminalList) {
-												
-												if (breaker.ID.equals(terminal3.ConductingEquipment) && !terminal3.equals(terminal1) 
-														&& !terminal3.equals(terminal2)) {
-													
-													for (ConnectivityNode node2:conNodeList) {
-														
-														if (node2.ID.equals(terminal3.ConnectivityNode)) {
-															
-															for (Terminal terminal4:terminalList) {
-																
-																if (terminal4.ConnectivityNode.equals(node2.ID) && !terminal4.equals(terminal1) 
-																		&& !terminal4.equals(terminal2) && !terminal4.equals(terminal3)) {
-																	
-																	for (BusBarSection busbar:busbarList) {
-																		
-																		if (terminal4.ConductingEquipment.equals(busbar.ID)) {
-																			
-																			busIDs.add(busbar.ID);
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}								
-							}
-						}
-					}
-				}
-			}
-			
-			Topology topo = new Topology("AC Line", line.ID, busIDs.get(0), busIDs.get(1));
-			topologyElements.add(topo);
-		}
-		
-		for (PowerTransformer trans:powerTransformerList) {
-			
-			ArrayList<String> busIDs = new ArrayList<>();
-			
-			for (PowerTransformerEnd wind:powerTransformerEndList) {
-				
-				if (trans.ID.equals(wind.transformerID)) {
-					
-					System.out.println("Winding works"); // For testing
-					System.out.println(wind.TerminalID);
-			
-					for (Terminal terminal1:terminalList) {
-				
-						if (wind.TerminalID.equals(terminal1.ID)) {
-							
-							System.out.println("terminal 1"); // For testing
-				
-							for (ConnectivityNode node1:conNodeList) {
-						
-								if (terminal1.ConnectivityNode.equals(node1.ID)) {
-									
-									System.out.println("node1 works"); // For testing
-						
-									for (Terminal terminal2:terminalList) {
-								
-										if (node1.ID.equals(terminal2.ConnectivityNode) && !terminal2.equals(terminal1)) { // The ! symbol makes the negative
-									
-											System.out.println("terminal2 works"); // For testing
-											
-											for (Breaker breaker:breakerList) {
-												
-												
-										
-												if (terminal2.ConductingEquipment.equals(breaker.ID)) {
-										
-													for (Terminal terminal3:terminalList) {
-												
-														if (breaker.ID.equals(terminal3.ConductingEquipment) && !terminal3.equals(terminal1) 
-																&& !terminal3.equals(terminal2)) {
-													
-															for (ConnectivityNode node2:conNodeList) {
-														
-																if (node2.ID.equals(terminal3.ConnectivityNode)) {
-															
-																	for (Terminal terminal4:terminalList) {
-																
-																		if (terminal4.ConnectivityNode.equals(node2.ID) && !terminal4.equals(terminal1) 
-																				&& !terminal4.equals(terminal2) && !terminal4.equals(terminal3)) {
-																	
-																			for (BusBarSection busbar:busbarList) {
-																		
-																				if (terminal4.ConductingEquipment.equals(busbar.ID)) {
-																			
-																					busIDs.add(busbar.ID);
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												} else {
-													
-													for (BusBarSection busbar:busbarList) {
-														
-														if (terminal2.ConductingEquipment.equals(busbar.ID)) {
-													
-															busIDs.add(busbar.ID); 
-														}
-													}
-												}
-											}
-										}								
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			Topology topo = new Topology("Transformer", trans.ID, busIDs.get(0), busIDs.get(1));
-			topologyElements.add(topo);
-		}
-		
+		//Write to test if the topology creation is working
 		for (Topology topo:topologyElements) {
 			System.out.println("The " + topo.Type + " which ID is " + topo.ID + " is connected to the busbar " + topo.IDBusBar1 + " and " + topo.IDBusBar2 + "\n");
 		}
 		
+		// Prueba para la creacion de la Ybus matrix
+		
+		ArrayList<Ybus> YbusMatrixElements = new ArrayList<>();
+		
+		
+		// Elementos diagonales
+		
+		for (BusBarSection busbar:busbarList) {
+			
+			ArrayList<Complex> Admittance = new ArrayList<>();
+			Complex TotalAdmittance = new Complex(0,0);
+			
+			for (Topology topo:topologyElements) {
+				
+				if (busbar.ID.equals(topo.IDBusBar1) || busbar.ID.equals(topo.IDBusBar2)) {
+					
+					for (ACLineSegment line:lineSegmentList) {
+						
+						if (topo.ID.equals(line.ID)) { 
+							
+							
+							Complex zline = new Complex (line.R, line.X);
+							Complex yline = new Complex (line.gch, line.bch);
+							Complex length = new Complex (line.length, 0);
+							Complex one = new Complex (1, 0);
+							
+							Admittance.add(one.divides(length.times(zline)).plus(length.times(yline)));
+						}
+					}
+					for (PowerTransformerEnd wind:powerTransformerEndList) {
+						
+					//	System.out.println(wind.R);
+						
+						if (topo.ID.equals(wind.transformerID) && !wind.R.equals(0.0)) {
+							
+							Complex one = new Complex (1, 0);
+							Complex ztrans = new Complex (wind.R, wind.X);
+							Complex ytrans = new Complex (wind.g, wind.b);
+							
+							
+							Admittance.add(one.divides(ztrans).plus(ytrans));
+						//	System.out.println(one.divides(ztrans).plus(ytrans));
+						}
+					}
+				}
+			}
+			
+			
+			for (int counter = 0; counter<Admittance.size(); counter++) {
+				TotalAdmittance = TotalAdmittance.plus(Admittance.get(counter));  
+			}
+			
+			Ybus DiagonalElement = new Ybus (busbar.ID, busbar.ID, TotalAdmittance);
+			YbusMatrixElements.add(DiagonalElement);
+			
+			System.out.println("The diagonal admittance of the bus " + busbar.ID + " is : " + TotalAdmittance);
+		}
+		
+		// System.out.println("The diagonal admittance of the bus " + YbusMatrixElements.get(1).FromBus + " is : " + YbusMatrixElements.get(1).Admittance);
+		
+		//prueba para calculo complejos
+		Complex length = new Complex(lineSegmentList.get(0).length, 0);
+		Complex zline = new Complex(lineSegmentList.get(0).R, lineSegmentList.get(0).X);
+		System.out.println("The impedance of the line " + lineSegmentList.get(0).ID + "is : " + length.times(zline));
 		
 
 	}

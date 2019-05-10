@@ -9,6 +9,8 @@ public class ACLineSegment {
 	Double R;
 	Double X;
 	Double bch; // Susceptance
+	Double length;
+	Double gch;
 	
 	public ACLineSegment(Element lineSegmentEQ) {
 		this.ID = lineSegmentEQ.getAttribute("rdf:ID");
@@ -16,6 +18,9 @@ public class ACLineSegment {
 		this.R = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.r").item(0).getTextContent());
 		this.X = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.x").item(0).getTextContent());
 		this.bch = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.bch").item(0).getTextContent());
+		this.length = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:Conductor.length").item(0).getTextContent());
+		this.gch = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.gch").item(0).getTextContent());
+		
 	}	
 	
 	public String getAttributesFromChildren (Element eElement, String childNode) {
