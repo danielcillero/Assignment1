@@ -330,7 +330,7 @@ public class Main {
 	//				syncMachList.get(0).equipContID + " and the base voltage ID is " + syncMachList.get(0).baseVoltID);
 		
 		
-		// Topology
+		// Topology creation from Topology class
 		
 		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, powerTransformerList, powerTransformerEndList);
 		
@@ -339,70 +339,20 @@ public class Main {
 			System.out.println("The " + topo.Type + " which ID is " + topo.ID + " is connected to the busbar " + topo.IDBusBar1 + " and " + topo.IDBusBar2 + "\n");
 		}
 		
-		// Prueba para la creacion de la Ybus matrix
 		
-		ArrayList<Ybus> YbusMatrixElements = new ArrayList<>();
+		// Ybus matrix creation from YbusCreation class
 		
+		ArrayList<Ybus> YbusMatrixElements = YbusCreation.createYbusMatrix(busbarList, topologyElements, lineSegmentList, powerTransformerEndList);
 		
-		// Elementos diagonales
+		// YbusMatrix test
+		int count = 0;
 		
-		for (BusBarSection busbar:busbarList) {
+		for (Ybus YbusElement:YbusMatrixElements) {
 			
-			ArrayList<Complex> Admittance = new ArrayList<>();
-			Complex TotalAdmittance = new Complex(0,0);
-			
-			for (Topology topo:topologyElements) {
-				
-				if (busbar.ID.equals(topo.IDBusBar1) || busbar.ID.equals(topo.IDBusBar2)) {
-					
-					for (ACLineSegment line:lineSegmentList) {
-						
-						if (topo.ID.equals(line.ID)) { 
-							
-							
-							Complex zline = new Complex (line.R, line.X);
-							Complex yline = new Complex (line.gch, line.bch);
-							Complex length = new Complex (line.length, 0);
-							Complex one = new Complex (1, 0);
-							
-							Admittance.add(one.divides(length.times(zline)).plus(length.times(yline)));
-						}
-					}
-					for (PowerTransformerEnd wind:powerTransformerEndList) {
-						
-					//	System.out.println(wind.R);
-						
-						if (topo.ID.equals(wind.transformerID) && !wind.R.equals(0.0)) {
-							
-							Complex one = new Complex (1, 0);
-							Complex ztrans = new Complex (wind.R, wind.X);
-							Complex ytrans = new Complex (wind.g, wind.b);
-							
-							
-							Admittance.add(one.divides(ztrans).plus(ytrans));
-						//	System.out.println(one.divides(ztrans).plus(ytrans));
-						}
-					}
-				}
-			}
-			
-			
-			for (int counter = 0; counter<Admittance.size(); counter++) {
-				TotalAdmittance = TotalAdmittance.plus(Admittance.get(counter));  
-			}
-			
-			Ybus DiagonalElement = new Ybus (busbar.ID, busbar.ID, TotalAdmittance);
-			YbusMatrixElements.add(DiagonalElement);
-			
-			System.out.println("The diagonal admittance of the bus " + busbar.ID + " is : " + TotalAdmittance);
+			count = count + 1;
+			System.out.println("The admittance from bus " + YbusElement.FromBus + " to bus " + YbusElement.ToBus + " is " + YbusElement.Admittance + ". Iteration nº: " + count);
 		}
 		
-		// System.out.println("The diagonal admittance of the bus " + YbusMatrixElements.get(1).FromBus + " is : " + YbusMatrixElements.get(1).Admittance);
-		
-		//prueba para calculo complejos
-		Complex length = new Complex(lineSegmentList.get(0).length, 0);
-		Complex zline = new Complex(lineSegmentList.get(0).R, lineSegmentList.get(0).X);
-		System.out.println("The impedance of the line " + lineSegmentList.get(0).ID + "is : " + length.times(zline));
 		
 
 	}
