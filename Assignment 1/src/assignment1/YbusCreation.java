@@ -57,8 +57,6 @@ public class YbusCreation {
 			
 			Ybus DiagonalElement = new Ybus (busbar.ID, busbar.ID, TotalAdmittance);
 			YbusMatrixElements.add(DiagonalElement);
-			
-			System.out.println("The diagonal admittance of the bus " + busbar.ID + " is : " + TotalAdmittance);
 		}
 		
 		
