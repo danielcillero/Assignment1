@@ -1,5 +1,7 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -70,5 +72,38 @@ public class EnergyConsumerLoad {
 			
 		}
 		return rdfBaseVolt;
+	}
+	
+	public static ArrayList<EnergyConsumerLoad> getElements(NodeList loadListEQ, NodeList loadListSSH, NodeList voltListEQ) {
+		
+		ArrayList<EnergyConsumerLoad> loadList = new ArrayList<>();
+		
+		for (int i=0 ; i < loadListEQ.getLength() ; i++) {
+			
+			Node node = loadListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			String rdfID = eElementEQ.getAttribute("rdf:ID");
+			
+			for (int j=0 ; j < loadListSSH.getLength() ; j++) {
+				Node nodeEQ = loadListSSH.item(i);
+				Element eElementSSH = (Element) nodeEQ;
+				
+				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);
+				
+				if (rdfID.equals(rdfSSH)) {
+					
+					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
+										
+					EnergyConsumerLoad load = new EnergyConsumerLoad(eElementEQ,eElementSSH,voltListEQ);
+					
+					loadList.add(load);
+					
+				}
+				
+			}
+		}
+		
+		return loadList;
 	}
 }

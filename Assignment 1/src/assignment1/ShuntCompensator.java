@@ -1,6 +1,9 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class ShuntCompensator {
@@ -27,6 +30,24 @@ public class ShuntCompensator {
 			
 		}
 		return childNode;		
+	}
+	
+	public static ArrayList<ShuntCompensator> getElements (NodeList shuntCompensatorListEQ) {
+		
+		ArrayList<ShuntCompensator> shuntCompensatorList = new ArrayList<>();
+		
+		for (int i=0 ; i < shuntCompensatorListEQ.getLength() ; i++) {
+			
+			Node node = shuntCompensatorListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			ShuntCompensator shunt = new ShuntCompensator(eElementEQ);
+			
+			shuntCompensatorList.add(shunt);
+			
+		}
+		
+		return shuntCompensatorList;
 	}
 
 }

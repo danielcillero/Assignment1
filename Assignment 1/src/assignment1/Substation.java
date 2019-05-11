@@ -1,6 +1,9 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Substation {
@@ -33,5 +36,23 @@ public class Substation {
 		return childNode;
 		
 	}	
+	
+	public static ArrayList<Substation> getElements(NodeList subListEQ) {
+		
+		ArrayList<Substation> subList = new ArrayList<>();
+		
+		for (int i=0 ; i < subListEQ.getLength() ; i++) {
+			
+			Node node = subListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			Substation substation = new Substation(eElementEQ);
+			
+			subList.add(substation);
+			
+		}
+		
+		return subList;
+	}
 
 }

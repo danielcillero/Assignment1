@@ -1,5 +1,7 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -65,4 +67,23 @@ public class ConnectivityNode {
 		}
 		return rdfBaseVolt;
 	}
+	
+	public static ArrayList<ConnectivityNode> getElements(NodeList connectivityNodeListEQ, NodeList voltListEQ) {
+		
+		ArrayList<ConnectivityNode> conNodeList = new ArrayList<>();
+		
+		for (int i=0 ; i < connectivityNodeListEQ.getLength() ; i++) {
+			
+			Node node = connectivityNodeListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			ConnectivityNode conNode = new ConnectivityNode(eElementEQ,voltListEQ);
+			
+			conNodeList.add(conNode);
+			
+		}
+		
+		return conNodeList;
+	}
+	
 }

@@ -10,8 +10,8 @@ import org.w3c.dom.NodeList;
 public class Main {
 	public static void main(String[] args) {
 		
-		File EQFile = new File("Assignment_EQ_reduced.xml");
-		File SSHFile = new File("Assignment_SSH_reduced.xml");
+		File EQFile = new File("MicroGridTestConfiguration_T1_BE_EQ_V2.xml");
+		File SSHFile = new File("MicroGridTestConfiguration_T1_BE_SSH_V2.xml");
 		
 		Reader EQ = new Reader(EQFile,"EQ");
 		Reader SSH = new Reader(SSHFile,"SSH");
@@ -41,305 +41,92 @@ public class Main {
 		
 		// Base Voltage
 		
-		ArrayList<BaseVoltage> baseVoltList = new ArrayList<>();
-		
-		for (int i=0 ; i < baseVoltListEQ.getLength() ; i++) {
-			
-			Node node = baseVoltListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			BaseVoltage basVolt = new BaseVoltage(eElementEQ);
-			
-			baseVoltList.add(basVolt);
-			
-		}
-		
+		ArrayList <BaseVoltage> baseVoltList = BaseVoltage.getElements(baseVoltListEQ);
+				
 		// Substation
 		
-		ArrayList<Substation> subList = new ArrayList<>();
-		
-		for (int i=0 ; i < subListEQ.getLength() ; i++) {
-			
-			Node node = subListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			Substation substation = new Substation(eElementEQ);
-			
-			subList.add(substation);
-			
-		}		
+		ArrayList<Substation> subList = Substation.getElements(subListEQ);
 		
 		// Voltage Level
 		
-		ArrayList<VoltageLevel> voltLevelList = new ArrayList<>();
-		
-		for (int i=0 ; i < voltListEQ.getLength() ; i++) {
-			
-			Node node = voltListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			VoltageLevel voltLevel = new VoltageLevel(eElementEQ);
-			
-			voltLevelList.add(voltLevel);
-			
-		}	
+		ArrayList<VoltageLevel> voltLevelList = VoltageLevel.getElements(voltListEQ);
 		
 		// Generating Units
 		
-		ArrayList<GeneratingUnit> genUnitList = new ArrayList<>();
-		
-		for (int i=0 ; i < genUnitListEQ.getLength() ; i++) {
-			
-			Node node = genUnitListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			GeneratingUnit genUnit = new GeneratingUnit(eElementEQ);
-			
-			genUnitList.add(genUnit);
-			
-		}
+		ArrayList<GeneratingUnit> genUnitList = GeneratingUnit.getElements(genUnitListEQ);
 		
 		// Synchronous Machines
 		
-		ArrayList<SyncMachine> syncMachList = new ArrayList<>();
-		
-		for (int i=0 ; i < syncMachListEQ.getLength() ; i++) {
-			
-			Node node = syncMachListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			String rdfID = eElementEQ.getAttribute("rdf:ID");
-			
-			for (int j=0 ; j < syncMachListSSH.getLength() ; j++) {
-				Node nodeEQ = syncMachListSSH.item(i);
-				Element eElementSSH = (Element) nodeEQ;
+		ArrayList<SyncMachine> syncMachList = SyncMachine.getElements(syncMachListEQ, syncMachListSSH, voltListEQ);
 				
-				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);
-				
-				if (rdfID.equals(rdfSSH)) {
-					
-					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
-										
-					SyncMachine symach = new SyncMachine(eElementEQ,eElementSSH,voltListEQ);
-					
-					syncMachList.add(symach);
-					
-				}
-				
-			}
-		}
-		
 		// Regulating Control Units
 		
-		ArrayList<RegulatingControl> regulControlList = new ArrayList<>();
-		
-		for (int i=0 ; i < regControlListEQ.getLength() ; i++) {
-			
-			Node node = regControlListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			String rdfID = eElementEQ.getAttribute("rdf:ID");
-			
-			for (int j=0 ; j < regControlListSSH.getLength() ; j++) {
-				Node nodeEQ = regControlListSSH.item(i);
-				Element eElementSSH = (Element) nodeEQ;
-				
-				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);
-				
-				if (rdfID.equals(rdfSSH)) {
-					
-					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
-										
-					RegulatingControl regControl = new RegulatingControl(eElementEQ,eElementSSH);
-					
-					regulControlList.add(regControl);
-					
-				}
-				
-			}
-		}
+		ArrayList<RegulatingControl> regulControlList = RegulatingControl.getElements(regControlListEQ, regControlListSSH);
 		
 		// Power Transformers
 		
-		ArrayList<PowerTransformer> powerTransformerList = new ArrayList<>();
-		
-		for (int i=0 ; i < transformerListEQ.getLength() ; i++) {
-			
-			Node node = transformerListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			PowerTransformer transformer = new PowerTransformer(eElementEQ);
-			
-			powerTransformerList.add(transformer);
-			
-		}		
+		ArrayList<PowerTransformer> powerTransformerList = PowerTransformer.getElements(transformerListEQ);
 		
 		// Energy Consumers (Loads)
 		
-		ArrayList<EnergyConsumerLoad> loadList = new ArrayList<>();
-		
-		for (int i=0 ; i < loadListEQ.getLength() ; i++) {
-			
-			Node node = loadListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			String rdfID = eElementEQ.getAttribute("rdf:ID");
-			
-			for (int j=0 ; j < loadListSSH.getLength() ; j++) {
-				Node nodeEQ = loadListSSH.item(i);
-				Element eElementSSH = (Element) nodeEQ;
-				
-				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);
-				
-				if (rdfID.equals(rdfSSH)) {
-					
-					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
-										
-					EnergyConsumerLoad load = new EnergyConsumerLoad(eElementEQ,eElementSSH,voltListEQ);
-					
-					loadList.add(load);
-					
-				}
-				
-			}
-		}		
-		
-		// Power Transformer Ends (Transformer Windings)
-		
-		ArrayList<PowerTransformerEnd> powerTransformerEndList = new ArrayList<>();
-		
-		for (int i=0 ; i < transfWindingListEQ.getLength() ; i++) {
-			
-			Node node = transfWindingListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			PowerTransformerEnd winding = new PowerTransformerEnd(eElementEQ);
-			
-			powerTransformerEndList.add(winding);
-			
-		}
-		
+		ArrayList<EnergyConsumerLoad> loadList = EnergyConsumerLoad.getElements(loadListEQ, loadListSSH, voltListEQ);
+						
 		// Breaker
 		
-		ArrayList<Breaker> breakerList = new ArrayList<>();
-		
-		for (int i=0 ; i < breakerListEQ.getLength() ; i++) {
-			
-			Node node = breakerListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			Breaker breaker = new Breaker(eElementEQ,voltListEQ);
-			
-			breakerList.add(breaker);
-			
-		}
+		ArrayList<Breaker> breakerList = Breaker.getElements(breakerListEQ, voltListEQ);
 				
 		// Ratio Tap Changer (Step)
 		
-		ArrayList<RatioTapChanger> ratioTapChangerList = new ArrayList<>();
-		
-		for (int i=0 ; i < ratioTapChangListEQ.getLength() ; i++) {
-			
-			Node node = ratioTapChangListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			RatioTapChanger ratioTapChanger = new RatioTapChanger(eElementEQ);
-			
-			ratioTapChangerList.add(ratioTapChanger);
-			
-		}
+		ArrayList<RatioTapChanger> ratioTapChangerList = RatioTapChanger.getElements(ratioTapChangListEQ);
 		
 		// Terminal
 		
-		ArrayList<Terminal> terminalList = new ArrayList<>();
-		
-		for (int i=0 ; i < terminalListEQ.getLength() ; i++) {
-			
-			Node node = terminalListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			Terminal termin = new Terminal(eElementEQ);
-			
-			terminalList.add(termin);
-			
-		}
+		ArrayList<Terminal> terminalList = Terminal.getElements(terminalListEQ);
 		
 		// Connectivity Nodes
 		
-		ArrayList<ConnectivityNode> conNodeList = new ArrayList<>();
-		
-		for (int i=0 ; i < connectivityNodeListEQ.getLength() ; i++) {
-			
-			Node node = connectivityNodeListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			ConnectivityNode conNode = new ConnectivityNode(eElementEQ,voltListEQ);
-			
-			conNodeList.add(conNode);
-			
-		}	
+		ArrayList<ConnectivityNode> conNodeList = ConnectivityNode.getElements(connectivityNodeListEQ, voltListEQ);
 		
 		// Linear Shunt Compensators
 		
-		ArrayList<ShuntCompensator> shuntCompensatorList = new ArrayList<>();
+		ArrayList<ShuntCompensator> shuntCompensatorList = ShuntCompensator.getElements(shuntCompensatorListEQ);	
+				
+		// BusBar Section
 		
-		for (int i=0 ; i < shuntCompensatorListEQ.getLength() ; i++) {
+		ArrayList<BusBarSection> busbarList = BusBarSection.getElements(busbarListEQ);
+		
+		// For power transformer ends and AC lines we need the base power which will be the maximum S of all the Synchronous Machines
+		
+		ArrayList<Double> maxSList = new ArrayList<>();
+		
+		for (SyncMachine sync:syncMachList) {
 			
-			Node node = shuntCompensatorListEQ.item(i);
-			Element eElementEQ = (Element) node;
+			maxSList.add(sync.ratedS);
 			
-			ShuntCompensator shunt = new ShuntCompensator(eElementEQ);
+		}
+		
+		Double maxS = 0.0;
+		
+		for (int i=0 ; i<maxSList.size() ; i++) {
 			
-			shuntCompensatorList.add(shunt);
+			if (maxSList.get(i) > maxS) {
+				maxS = maxSList.get(i);
+			}
 			
-		}		
+		}
 		
 		// AC Line Segment
 		
-		ArrayList<ACLineSegment> lineSegmentList = new ArrayList<>();
+		ArrayList<ACLineSegment> lineSegmentList = ACLineSegment.getElements(lineSegmentACListEQ, baseVoltList, maxS);
 		
-		for (int i=0 ; i < lineSegmentACListEQ.getLength() ; i++) {
-			
-			Node node = lineSegmentACListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			ACLineSegment line = new ACLineSegment(eElementEQ);
-			
-			lineSegmentList.add(line);
-			
-		}
+		// Power Transformer Ends (Transformer Windings)
 		
-		// BusBar Section
-		
-		ArrayList<BusBarSection> busbarList = new ArrayList<>();
-		
-		for (int i=0 ; i < busbarListEQ.getLength() ; i++) {
-			
-			Node node = busbarListEQ.item(i);
-			Element eElementEQ = (Element) node;
-			
-			BusBarSection busbar = new BusBarSection(eElementEQ);
-			
-			busbarList.add(busbar);
-			
-		}
-		
-		// Try to see if it works
-		
-	//	System.out.println("For the SyncMach with ID " + syncMachList.get(0).ID + " the ID of the VoltageLevel is " + 
-	//				syncMachList.get(0).equipContID + " and the base voltage ID is " + syncMachList.get(0).baseVoltID);
-		
+		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, maxS);
 		
 		// Topology creation from Topology class
 		
 		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, powerTransformerList, powerTransformerEndList);
-		
-		//Write to test if the topology creation is working
-		for (Topology topo:topologyElements) {
-			System.out.println("The " + topo.Type + " which ID is " + topo.ID + " is connected to the busbar " + topo.IDBusBar1 + " and " + topo.IDBusBar2 + "\n");
-		}
-		
-		
+				
 		// Ybus matrix creation from YbusCreation class
 		
 		ArrayList<Ybus> YbusMatrixElements = YbusCreation.createYbusMatrix(busbarList, topologyElements, lineSegmentList, powerTransformerEndList);
@@ -355,6 +142,22 @@ public class Main {
 		
 		
 
+	}
+	
+	public static String getAttributesFromChildren (Element eElement, String childNode) {
+		
+		for (int i = 0; i < eElement.getChildNodes().getLength(); i++) { // "for" with all the children nodes of the main node
+			
+			if (eElement.getChildNodes().item(i).getNodeName() == childNode) { 
+				
+				Element outputElement = (Element) eElement.getChildNodes().item(i); // New element with this node
+				
+				return outputElement.getAttribute("rdf:resource").substring(1); // Without # because of the substring(1), it deletes the first character
+				
+			}
+			
+		}
+		return childNode;		
 	}
 
 }

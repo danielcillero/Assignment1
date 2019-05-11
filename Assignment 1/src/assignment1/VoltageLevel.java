@@ -1,6 +1,10 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class VoltageLevel {
 
@@ -34,5 +38,23 @@ public class VoltageLevel {
 		return childNode;
 		
 	}	
+	
+	public static ArrayList<VoltageLevel> getElements(NodeList voltListEQ) {
+		
+		ArrayList<VoltageLevel> voltLevelList = new ArrayList<>();
+		
+		for (int i=0 ; i < voltListEQ.getLength() ; i++) {
+			
+			Node node = voltListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			VoltageLevel voltLevel = new VoltageLevel(eElementEQ);
+			
+			voltLevelList.add(voltLevel);
+			
+		}
+		
+		return voltLevelList;
+	}
 
 }

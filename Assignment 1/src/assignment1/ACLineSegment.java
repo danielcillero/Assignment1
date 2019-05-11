@@ -1,6 +1,10 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class ACLineSegment {
 
@@ -9,21 +13,31 @@ public class ACLineSegment {
 	Double R;
 	Double X;
 	Double bch; // Susceptance
-	Double length;
 	Double gch;
+	Double length;
+	Double Zbase;
+	Double Rpu;
+	Double Xpu;
+	Double bchpu; 
+	Double gchpu;
 	
-	public ACLineSegment(Element lineSegmentEQ) {
+	public ACLineSegment(Element lineSegmentEQ, BaseVoltage base, Double maxS) {
 		this.ID = lineSegmentEQ.getAttribute("rdf:ID");
 		this.equipContID = getAttributesFromChildren(lineSegmentEQ,"cim:Equipment.EquipmentContainer");
 		this.R = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.r").item(0).getTextContent());
 		this.X = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.x").item(0).getTextContent());
 		this.bch = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.bch").item(0).getTextContent());
-		this.length = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:Conductor.length").item(0).getTextContent());
 		this.gch = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.gch").item(0).getTextContent());
+		this.length = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:Conductor.length").item(0).getTextContent());
+		this.Zbase = base.nominalValue * base.nominalValue / maxS;
+		this.Rpu = R/Zbase;
+		this.Xpu = X/Zbase;
+		this.bchpu = bch*Zbase;
+		this.gchpu = gch*Zbase;
 		
 	}	
 	
-	public String getAttributesFromChildren (Element eElement, String childNode) {
+	public static String getAttributesFromChildren (Element eElement, String childNode) {
 		
 		for (int i = 0; i < eElement.getChildNodes().getLength(); i++) { // "for" with all the children nodes of the main node
 			
@@ -37,6 +51,35 @@ public class ACLineSegment {
 			
 		}
 		return childNode;		
+	}
+	
+	public static ArrayList<ACLineSegment> getElements(NodeList lineSegmentACListEQ, ArrayList<BaseVoltage> baseVoltList, Double maxS) {
+		
+		ArrayList<ACLineSegment> lineSegmentList = new ArrayList<>();
+		
+		for (int i=0 ; i < lineSegmentACListEQ.getLength() ; i++) {
+			
+			Node node = lineSegmentACListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			String rdfID = getAttributesFromChildren(eElementEQ,"cim:ConductingEquipment.BaseVoltage");
+			
+			for (BaseVoltage base:baseVoltList) {
+								
+				if (rdfID.equals(base.ID)) {
+					
+					ACLineSegment line = new ACLineSegment(eElementEQ,base,maxS);
+					
+					lineSegmentList.add(line);
+					
+				}
+			
+			}
+						
+		}
+		
+		return lineSegmentList;
+		
 	}
 
 }

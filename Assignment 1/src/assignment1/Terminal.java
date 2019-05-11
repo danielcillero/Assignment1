@@ -1,6 +1,10 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class Terminal {
 	String ID;
@@ -33,5 +37,23 @@ public class Terminal {
 		return childNode;
 		
 	}	
+	
+	public static ArrayList<Terminal> getElements(NodeList terminalListEQ) {
+		
+		ArrayList<Terminal> terminalList = new ArrayList<>();
+		
+		for (int i=0 ; i < terminalListEQ.getLength() ; i++) {
+			
+			Node node = terminalListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			Terminal termin = new Terminal(eElementEQ);
+			
+			terminalList.add(termin);
+			
+		}
+		
+		return terminalList;
+	}
 
 }

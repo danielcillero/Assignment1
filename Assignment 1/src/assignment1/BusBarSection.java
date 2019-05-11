@@ -1,6 +1,10 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class BusBarSection {
 	
@@ -26,6 +30,24 @@ public class BusBarSection {
 			
 		}
 		return childNode;		
+	}
+	
+	public static ArrayList<BusBarSection> getElements(NodeList busbarListEQ) {
+		
+		ArrayList<BusBarSection> busbarList = new ArrayList<>();
+		
+		for (int i=0 ; i < busbarListEQ.getLength() ; i++) {
+			
+			Node node = busbarListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			BusBarSection busbar = new BusBarSection(eElementEQ);
+			
+			busbarList.add(busbar);
+			
+		}
+		
+		return busbarList;
 	}
 
 }

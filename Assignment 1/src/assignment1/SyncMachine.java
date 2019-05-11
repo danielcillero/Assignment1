@@ -1,5 +1,7 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -76,6 +78,39 @@ public class SyncMachine {
 			
 		}
 		return rdfBaseVolt;
+	}
+	
+	public static ArrayList<SyncMachine> getElements(NodeList syncMachListEQ, NodeList syncMachListSSH, NodeList voltListEQ) {
+		
+		ArrayList<SyncMachine> syncMachList = new ArrayList<>();
+		
+		for (int i=0 ; i < syncMachListEQ.getLength() ; i++) {
+			
+			Node node = syncMachListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			String rdfID = eElementEQ.getAttribute("rdf:ID");
+			
+			for (int j=0 ; j < syncMachListSSH.getLength() ; j++) {
+				Node nodeEQ = syncMachListSSH.item(i);
+				Element eElementSSH = (Element) nodeEQ;
+				
+				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);
+				
+				if (rdfID.equals(rdfSSH)) {
+					
+					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
+										
+					SyncMachine symach = new SyncMachine(eElementEQ,eElementSSH,voltListEQ);
+					
+					syncMachList.add(symach);
+					
+				}
+				
+			}
+		}
+		
+		return syncMachList;
 	}
 }
 	

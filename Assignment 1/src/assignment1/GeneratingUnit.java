@@ -1,6 +1,9 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class GeneratingUnit {
@@ -35,6 +38,24 @@ public class GeneratingUnit {
 		}
 		return childNode;
 		
+	}
+	
+	public static ArrayList<GeneratingUnit> getElements(NodeList genUnitListEQ) {
+		
+		ArrayList<GeneratingUnit> genUnitList = new ArrayList<>();
+		
+		for (int i=0 ; i < genUnitListEQ.getLength() ; i++) {
+			
+			Node node = genUnitListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			GeneratingUnit genUnit = new GeneratingUnit(eElementEQ);
+			
+			genUnitList.add(genUnit);
+			
+		}
+		
+		return genUnitList;
 	}
 	
 }

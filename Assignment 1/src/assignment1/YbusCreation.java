@@ -25,8 +25,8 @@ public class YbusCreation {
 						if (topo.ID.equals(line.ID)) { 
 							
 							
-							Complex zline = new Complex (line.R, line.X);
-							Complex yline = new Complex (line.gch, line.bch);
+							Complex zline = new Complex (line.Rpu, line.Xpu);
+							Complex yline = new Complex (line.gchpu, line.bchpu);
 							Complex length = new Complex (line.length, 0);
 							Complex one = new Complex (1, 0);
 							Complex two = new Complex (2,0);
@@ -41,8 +41,8 @@ public class YbusCreation {
 						if (topo.ID.equals(wind.transformerID) && !wind.R.equals(0.0)) {
 							
 							Complex one = new Complex (1, 0);
-							Complex ztrans = new Complex (wind.R, wind.X);
-							Complex ytrans = new Complex (wind.g, wind.b);
+							Complex ztrans = new Complex (wind.Rpu, wind.Xpu);
+							Complex ytrans = new Complex (wind.gchpu, wind.bchpu);
 							
 							Admittance.add(one.divides(ztrans).plus(ytrans));
 						}
@@ -80,7 +80,7 @@ public class YbusCreation {
 								
 								if (topo.ID.equals(line.ID)) { 
 									
-									Complex zline = new Complex (line.R, line.X);
+									Complex zline = new Complex (line.Rpu, line.Xpu);
 									Complex length = new Complex (line.length, 0);
 									Complex one = new Complex (1, 0);
 									Complex minusOne = new Complex (-1,0);
@@ -93,7 +93,7 @@ public class YbusCreation {
 								if (topo.ID.equals(wind.transformerID) && !wind.R.equals(0.0)) {
 									
 									Complex one = new Complex (1, 0);
-									Complex ztrans = new Complex (wind.R, wind.X);
+									Complex ztrans = new Complex (wind.Rpu, wind.Xpu);
 									Complex minusOne = new Complex (-1,0);
 									
 									Admittance.add(minusOne.times(one.divides(ztrans)));

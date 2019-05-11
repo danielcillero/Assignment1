@@ -1,6 +1,10 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class PowerTransformer {
 
@@ -29,6 +33,24 @@ public class PowerTransformer {
 		}
 		return childNode;
 		
+	}
+	
+	public static ArrayList<PowerTransformer> getElements(NodeList transformerListEQ) {
+		
+		ArrayList<PowerTransformer> powerTransformerList = new ArrayList<>();
+		
+		for (int i=0 ; i < transformerListEQ.getLength() ; i++) {
+			
+			Node node = transformerListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			PowerTransformer transformer = new PowerTransformer(eElementEQ);
+			
+			powerTransformerList.add(transformer);
+			
+		}
+		
+		return powerTransformerList;
 	}
 
 }

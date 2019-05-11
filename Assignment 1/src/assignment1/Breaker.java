@@ -1,5 +1,7 @@
 package assignment1; /////////////
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -68,6 +70,24 @@ public class Breaker {
 			
 		}
 		return rdfBaseVolt;
+	}
+	
+	public static ArrayList<Breaker> getElements(NodeList breakerListEQ, NodeList voltListEQ) {
+		
+		ArrayList<Breaker> breakerList = new ArrayList<>();
+		
+		for (int i=0 ; i < breakerListEQ.getLength() ; i++) {
+			
+			Node node = breakerListEQ.item(i);
+			Element eElementEQ = (Element) node;
+			
+			Breaker breaker = new Breaker(eElementEQ,voltListEQ);
+			
+			breakerList.add(breaker);
+			
+		}
+		
+		return breakerList;
 	}
 
 }
