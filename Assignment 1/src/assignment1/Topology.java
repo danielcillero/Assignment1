@@ -40,7 +40,9 @@ public class Topology {
 									
 									for (Breaker breaker:breakerList) {
 										
-										if (terminal2.ConductingEquipment.equals(breaker.ID)) {
+										
+										
+										if (terminal2.ConductingEquipment.equals(breaker.ID) && breaker.NormallyOpen == false) {
 										
 											for (Terminal terminal3:terminalList) {
 												
@@ -69,9 +71,18 @@ public class Topology {
 													}
 												}
 											}
+										} else {
+											
+											for (BusBarSection busbar:busbarList) {
+																				
+											if (terminal2.ConductingEquipment.equals(busbar.ID)) {
+										
+												busIDs.add(busbar.ID);												
+												}
+											}
 										}
-									}
-								}								
+									}								
+								}
 							}
 						}
 					}
@@ -89,33 +100,24 @@ public class Topology {
 			for (PowerTransformerEnd wind:powerTransformerEndList) {
 				
 				if (trans.ID.equals(wind.transformerID)) {
-					
-					System.out.println("Winding works"); // For testing
-					System.out.println(wind.TerminalID);
-			
+								
 					for (Terminal terminal1:terminalList) {
 				
 						if (wind.TerminalID.equals(terminal1.ID)) {
-							
-							System.out.println("terminal 1"); // For testing
-				
+											
 							for (ConnectivityNode node1:conNodeList) {
 						
 								if (terminal1.ConnectivityNode.equals(node1.ID)) {
-									
-									System.out.println("node1 works"); // For testing
-						
+															
 									for (Terminal terminal2:terminalList) {
 								
 										if (node1.ID.equals(terminal2.ConnectivityNode) && !terminal2.equals(terminal1)) { // The ! symbol makes the negative
-									
-											System.out.println("terminal2 works"); // For testing
 											
 											for (Breaker breaker:breakerList) {
 												
 												
 										
-												if (terminal2.ConductingEquipment.equals(breaker.ID)) {
+												if (terminal2.ConductingEquipment.equals(breaker.ID) && breaker.NormallyOpen == false) {
 										
 													for (Terminal terminal3:terminalList) {
 												
