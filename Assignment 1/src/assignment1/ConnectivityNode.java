@@ -9,11 +9,13 @@ import org.w3c.dom.NodeList;
 public class ConnectivityNode {
 
 	String ID;
+	String name;
 	String conContID;
 	String baseVoltID;
 	
 	public ConnectivityNode(Element conNodeEQ, NodeList voltLevel) {
 		this.ID = conNodeEQ.getAttribute("rdf:ID");
+		this.name = conNodeEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
 		this.conContID = getAttributesFromChildren(conNodeEQ,"cim:ConnectivityNode.ConnectivityNodeContainer");
 		this.baseVoltID = rdfBaseVolt(voltLevel,conContID);
 	}

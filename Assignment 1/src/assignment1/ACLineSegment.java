@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 public class ACLineSegment {
 
 	String ID;
+	String name;
 	String equipContID;
 	Double R;
 	Double X;
@@ -23,6 +24,7 @@ public class ACLineSegment {
 	
 	public ACLineSegment(Element lineSegmentEQ, BaseVoltage base, Double maxS) {
 		this.ID = lineSegmentEQ.getAttribute("rdf:ID");
+		this.name = lineSegmentEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
 		this.equipContID = getAttributesFromChildren(lineSegmentEQ,"cim:Equipment.EquipmentContainer");
 		this.R = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.r").item(0).getTextContent());
 		this.X = Double.parseDouble(lineSegmentEQ.getElementsByTagName("cim:ACLineSegment.x").item(0).getTextContent());
