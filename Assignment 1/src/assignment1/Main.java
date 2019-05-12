@@ -1,11 +1,17 @@
 package assignment1; /////////////
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.sql.*;
 
 public class Main {
 	public static void main(String[] args) {
@@ -102,7 +108,6 @@ public class Main {
 		for (SyncMachine sync:syncMachList) {
 			
 			maxSList.add(sync.ratedS);
-			
 		}
 		
 		Double maxS = 0.0;
@@ -112,7 +117,6 @@ public class Main {
 			if (maxSList.get(i) > maxS) {
 				maxS = maxSList.get(i);
 			}
-			
 		}
 		
 		// AC Line Segment
@@ -123,12 +127,14 @@ public class Main {
 		
 		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, maxS);
 		
-		// Topology creation from Topology class
 		
+		
+		
+		// Topology creation from Topology class
 		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, powerTransformerList, powerTransformerEndList);
 				
-		// Ybus matrix creation from YbusCreation class
 		
+		// Ybus matrix creation from YbusCreation class
 		ArrayList<Ybus> YbusMatrixElements = YbusCreation.createYbusMatrix(busbarList, topologyElements, lineSegmentList, powerTransformerEndList);
 		
 		// YbusMatrix test
@@ -141,24 +147,29 @@ public class Main {
 		}
 		
 		
-
-	}
-	
-	public static String getAttributesFromChildren (Element eElement, String childNode) {
 		
-		for (int i = 0; i < eElement.getChildNodes().getLength(); i++) { // "for" with all the children nodes of the main node
-			
-			if (eElement.getChildNodes().item(i).getNodeName() == childNode) { 
-				
-				Element outputElement = (Element) eElement.getChildNodes().item(i); // New element with this node
-				
-				return outputElement.getAttribute("rdf:resource").substring(1); // Without # because of the substring(1), it deletes the first character
-				
-			}
-			
-		}
-		return childNode;		
+		// Database creation.
+		
+		DatabaseCreation.createDatabase(lineSegmentList, baseVoltList, breakerList, busbarList, conNodeList, loadList,
+				genUnitList, powerTransformerList, powerTransformerEndList, ratioTapChangerList, regulControlList,
+				shuntCompensatorList, subList, syncMachList, terminalList, voltLevelList, YbusMatrixElements);
+		
+		
+		
+		//baseVoltList, subList , voltLevelList , genUnitList, syncMachList 
+		//regulControlList, powerTransformerList, loadList, breakerList
+		//ratioTapChangerList, terminalList, conNodeList, shuntCompensatorList	
+		//busbarList, lineSegmentList, powerTransformerEndList
+		
+		
+		
+
 	}
 
 }
+
+
+
+
+
 
