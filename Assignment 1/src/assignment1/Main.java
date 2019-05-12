@@ -44,6 +44,7 @@ public class Main {
 		NodeList syncMachListSSH = SSH.nodes.get(0);
 		NodeList regControlListSSH = SSH.nodes.get(1);
 		NodeList loadListSSH = SSH.nodes.get(2);
+		NodeList breakerListSSH = SSH.nodes.get(3);
 		
 		// Base Voltage
 		
@@ -79,7 +80,7 @@ public class Main {
 						
 		// Breaker
 		
-		ArrayList<Breaker> breakerList = Breaker.getElements(breakerListEQ, voltListEQ);
+		ArrayList<Breaker> breakerList = Breaker.getElements(breakerListEQ, breakerListSSH, voltListEQ);
 				
 		// Ratio Tap Changer (Step)
 		
@@ -126,26 +127,17 @@ public class Main {
 		// Power Transformer Ends (Transformer Windings)
 		
 		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, maxS);
-		
-		
-		
-		
+			
 		// Topology creation from Topology class
 		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, powerTransformerList, powerTransformerEndList);
 				
 		
-		// Ybus matrix creation from YbusCreation class
-		ArrayList<Ybus> YbusMatrixElements = YbusCreation.createYbusMatrix(busbarList, topologyElements, lineSegmentList, powerTransformerEndList);
+		// Ybus matrix creation from Ybus class
+		ArrayList<Ybus> YbusMatrixElements = Ybus.createYbusMatrix(busbarList, topologyElements, lineSegmentList, powerTransformerEndList);
 		
 		// YbusMatrix test
-		int count = 0;
 		
-		for (Ybus YbusElement:YbusMatrixElements) {
-			
-			count = count + 1;
-			System.out.println("The admittance from bus " + YbusElement.FromBus + " to bus " + YbusElement.ToBus + " is " + YbusElement.Admittance + ". Iteration nº: " + count);
-		}
-		
+		Ybus.yBusMatrix(YbusMatrixElements, busbarList);
 		
 		
 		// Database creation.

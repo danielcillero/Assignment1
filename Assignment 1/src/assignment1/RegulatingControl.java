@@ -30,7 +30,7 @@ public class RegulatingControl {
 			String rdfID = eElementEQ.getAttribute("rdf:ID");
 			
 			for (int j=0 ; j < regControlListSSH.getLength() ; j++) {
-				Node nodeEQ = regControlListSSH.item(i);
+				Node nodeEQ = regControlListSSH.item(j);
 				Element eElementSSH = (Element) nodeEQ;
 				
 				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);

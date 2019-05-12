@@ -101,7 +101,7 @@ public class DatabaseCreation {
 			// Insert values into the table
 			for (Breaker breaker:breakerList){
 				stmt.executeUpdate("INSERT INTO Breakers VALUES('" + breaker.ID + "','" + breaker.name +
-						"','" + String.valueOf(breaker.NormallyOpen) + "','" + breaker.equipContID + "','" + breaker.baseVoltID + "')"); 
+						"','" + String.valueOf(breaker.Open) + "','" + breaker.equipContID + "','" + breaker.baseVoltID + "')"); 
 			}
 			
 			System.out.println("Inserted records into Breakers table...");
