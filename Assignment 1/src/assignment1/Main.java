@@ -150,9 +150,9 @@ public class Main {
 		
 		// Database creation.
 		
-		//DatabaseCreation.createDatabase(lineSegmentList, baseVoltList, breakerList, busbarList, conNodeList, loadList,
-		//		genUnitList, powerTransformerList, powerTransformerEndList, ratioTapChangerList, regulControlList,
-		//		shuntCompensatorList, subList, syncMachList, terminalList, voltLevelList, YbusMatrixElements);
+		DatabaseCreation.createDatabase(lineSegmentList, baseVoltList, breakerList, busbarList, conNodeList, loadList,
+				genUnitList, powerTransformerList, powerTransformerEndList, ratioTapChangerList, regulControlList,
+				shuntCompensatorList, subList, syncMachList, terminalList, voltLevelList, YbusMatrixElements);
 		
 		
 		
