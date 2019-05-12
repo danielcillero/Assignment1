@@ -9,10 +9,12 @@ import org.w3c.dom.NodeList;
 public class BusBarSection {
 	
 	String ID;
+	String name;
 	String equipContID;
 	
 	public BusBarSection(Element busBarEQ) {
 		this.ID = busBarEQ.getAttribute("rdf:ID");
+		this.name = busBarEQ.getElementsByTagName("cim:IdentifiedObject.name").item(0).getTextContent();
 		this.equipContID = getAttributesFromChildren(busBarEQ,"cim:Equipment.EquipmentContainer");
 	}	
 	
