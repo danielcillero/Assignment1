@@ -78,12 +78,15 @@ public class Reader {
 			NodeList syncMachList = doc.getElementsByTagName("cim:SynchronousMachine");
 			NodeList regControlList = doc.getElementsByTagName("cim:RegulatingControl");
 			NodeList loadList = doc.getElementsByTagName("cim:EnergyConsumer");
+			NodeList breakerList = doc.getElementsByTagName("cim:Breaker");
+			
 			
 			// Extract all the parameters needed (Check voids in the end)
 			// List<NodeList> nodes = new ArrayList<>();
 			nodes.add(syncMachList);
 			nodes.add(regControlList);
 			nodes.add(loadList);
+			nodes.add(breakerList);
 		}
 				
 		} catch(Exception e){

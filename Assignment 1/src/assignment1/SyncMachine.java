@@ -92,7 +92,7 @@ public class SyncMachine {
 			String rdfID = eElementEQ.getAttribute("rdf:ID");
 			
 			for (int j=0 ; j < syncMachListSSH.getLength() ; j++) {
-				Node nodeEQ = syncMachListSSH.item(i);
+				Node nodeEQ = syncMachListSSH.item(j);
 				Element eElementSSH = (Element) nodeEQ;
 				
 				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);

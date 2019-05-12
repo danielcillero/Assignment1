@@ -42,7 +42,7 @@ public class Topology {
 										
 										
 										
-										if (terminal2.ConductingEquipment.equals(breaker.ID) && breaker.NormallyOpen == false) {
+										if (terminal2.ConductingEquipment.equals(breaker.ID) && breaker.Open == false) {
 										
 											for (Terminal terminal3:terminalList) {
 												
@@ -117,7 +117,7 @@ public class Topology {
 												
 												
 										
-												if (terminal2.ConductingEquipment.equals(breaker.ID) && breaker.NormallyOpen == false) {
+												if (terminal2.ConductingEquipment.equals(breaker.ID) && breaker.Open == false) {
 										
 													for (Terminal terminal3:terminalList) {
 												

@@ -86,7 +86,7 @@ public class EnergyConsumerLoad {
 			String rdfID = eElementEQ.getAttribute("rdf:ID");
 			
 			for (int j=0 ; j < loadListSSH.getLength() ; j++) {
-				Node nodeEQ = loadListSSH.item(i);
+				Node nodeEQ = loadListSSH.item(j);
 				Element eElementSSH = (Element) nodeEQ;
 				
 				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);

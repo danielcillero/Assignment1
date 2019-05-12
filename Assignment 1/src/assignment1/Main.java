@@ -44,6 +44,7 @@ public class Main {
 		NodeList syncMachListSSH = SSH.nodes.get(0);
 		NodeList regControlListSSH = SSH.nodes.get(1);
 		NodeList loadListSSH = SSH.nodes.get(2);
+		NodeList breakerListSSH = SSH.nodes.get(3);
 		
 		// Base Voltage
 		
@@ -79,7 +80,7 @@ public class Main {
 						
 		// Breaker
 		
-		ArrayList<Breaker> breakerList = Breaker.getElements(breakerListEQ, voltListEQ);
+		ArrayList<Breaker> breakerList = Breaker.getElements(breakerListEQ, breakerListSSH, voltListEQ);
 				
 		// Ratio Tap Changer (Step)
 		
