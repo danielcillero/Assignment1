@@ -127,26 +127,17 @@ public class Main {
 		// Power Transformer Ends (Transformer Windings)
 		
 		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, maxS);
-		
-		
-		
-		
+			
 		// Topology creation from Topology class
 		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, powerTransformerList, powerTransformerEndList);
 				
 		
-		// Ybus matrix creation from YbusCreation class
-		ArrayList<Ybus> YbusMatrixElements = YbusCreation.createYbusMatrix(busbarList, topologyElements, lineSegmentList, powerTransformerEndList);
+		// Ybus matrix creation from Ybus class
+		ArrayList<Ybus> YbusMatrixElements = Ybus.createYbusMatrix(busbarList, topologyElements, lineSegmentList, powerTransformerEndList);
 		
 		// YbusMatrix test
-		int count = 0;
 		
-		for (Ybus YbusElement:YbusMatrixElements) {
-			
-			count = count + 1;
-			System.out.println("The admittance from bus " + YbusElement.FromBus + " to bus " + YbusElement.ToBus + " is " + YbusElement.Admittance + ". Iteration nº: " + count);
-		}
-		
+		Ybus.yBusMatrix(YbusMatrixElements, busbarList);
 		
 		
 		// Database creation.
