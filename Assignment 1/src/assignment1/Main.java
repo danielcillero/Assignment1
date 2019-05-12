@@ -1,17 +1,9 @@
 package assignment1; /////////////
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.sql.*;
 
 public class Main {
 	public static void main(String[] args) {
@@ -125,7 +117,6 @@ public class Main {
 		ArrayList<ACLineSegment> lineSegmentList = ACLineSegment.getElements(lineSegmentACListEQ, baseVoltList, maxS);
 		
 		// Power Transformer Ends (Transformer Windings)
-		
 		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, maxS);
 			
 		// Topology creation from Topology class
@@ -137,24 +128,14 @@ public class Main {
 		
 		// YbusMatrix test
 		
-		Ybus.yBusMatrix(YbusMatrixElements, busbarList);
+		Ybus.printYBusMatrix(YbusMatrixElements, busbarList);
 		
 		
 		// Database creation.
-		
 		DatabaseCreation.createDatabase(lineSegmentList, baseVoltList, breakerList, busbarList, conNodeList, loadList,
 				genUnitList, powerTransformerList, powerTransformerEndList, ratioTapChangerList, regulControlList,
 				shuntCompensatorList, subList, syncMachList, terminalList, voltLevelList, YbusMatrixElements);
 		
-		
-		
-		//baseVoltList, subList , voltLevelList , genUnitList, syncMachList 
-		//regulControlList, powerTransformerList, loadList, breakerList
-		//ratioTapChangerList, terminalList, conNodeList, shuntCompensatorList	
-		//busbarList, lineSegmentList, powerTransformerEndList
-		
-		
-
 	}
 
 }

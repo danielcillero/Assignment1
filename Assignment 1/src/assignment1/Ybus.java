@@ -14,7 +14,7 @@ public class Ybus {
 		this.Admittance = Admittance;
 	}
 	
-	public static void yBusMatrix(ArrayList<Ybus> YbusMatrixElements, ArrayList<BusBarSection> busbarList) {
+	public static void printYBusMatrix(ArrayList<Ybus> YbusMatrixElements, ArrayList<BusBarSection> busbarList) {
 							
 		Complex[][] matrix = new Complex[busbarList.size()][busbarList.size()];
 		
