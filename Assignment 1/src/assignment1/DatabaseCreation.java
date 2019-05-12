@@ -72,13 +72,26 @@ public class DatabaseCreation {
 						"','" + line.R + "','" + line.X + "','" + line.bch + "','" + line.gch + "','" + line.length +
 						"','" + line.Zbase + "','" + line.Rpu + "','" + line.Xpu + "','" + line.bchpu + "','" + line.gchpu + "')"); 
 			}
-			
 			System.out.println("Inserted records into the table...");
 			
 			
 			//BASE VOLTAGE TABLE
 			// Create Table with corresponding columns
-			stmt.executeUpdate("CREATE TABLE ACLines (ID VARCHAR(50), equipContID VARCHAR(50), "
+			stmt.executeUpdate("CREATE TABLE BaseVoltages (ID VARCHAR(50), NominalValue DECIMAL(10,6)");
+			
+			System.out.println("Created table in given database successfully...");
+			
+			// Insert values into the table
+			for (BaseVoltage basevolt:baseVoltList){
+				stmt.executeUpdate("INSERT INTO BaseVoltages VALUES('" + basevolt.ID + "','" + basevolt.nominalValue + "')"); 
+			}
+			System.out.println("Inserted records into the table...");
+			
+			////////////////////////////////////////////////////////////
+			
+			//Breakers TABLE CREATION
+			// Create Table with corresponding columns
+			stmt.executeUpdate("CREATE TABLE Breakers (ID VARCHAR(50), name VARCHAR(50), "
 					+ "r DECIMAL(10,6), x DECIMAL(10,6), bch DECIMAL(10,6), gch DECIMAL(10,6), "
 					+ "length DECIMAL(10,6), zbase DECIMAL(10,6), rpu DECIMAL(10,6), xpu DECIMAL(10,6), "
 					+ "bchpu DECIMAL(10,6), gchpu DECIMAL(10,6) )");
@@ -94,7 +107,7 @@ public class DatabaseCreation {
 			
 			System.out.println("Inserted records into the table...");
 			
-		
+			
 			conn.close();
 			
 		}catch(SQLException se){
