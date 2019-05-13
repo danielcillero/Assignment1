@@ -92,8 +92,6 @@ public class EnergyConsumerLoad {
 				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);
 				
 				if (rdfID.equals(rdfSSH)) {
-					
-					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
 										
 					EnergyConsumerLoad load = new EnergyConsumerLoad(eElementEQ,eElementSSH,voltListEQ);
 					

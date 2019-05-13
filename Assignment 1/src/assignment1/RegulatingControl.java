@@ -36,8 +36,6 @@ public class RegulatingControl {
 				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);
 				
 				if (rdfID.equals(rdfSSH)) {
-					
-					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
 										
 					RegulatingControl regControl = new RegulatingControl(eElementEQ,eElementSSH);
 					

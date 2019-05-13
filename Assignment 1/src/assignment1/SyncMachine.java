@@ -99,8 +99,6 @@ public class SyncMachine {
 				
 				if (rdfID.equals(rdfSSH)) {
 					
-					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
-										
 					SyncMachine symach = new SyncMachine(eElementEQ,eElementSSH,voltListEQ);
 					
 					syncMachList.add(symach);

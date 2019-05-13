@@ -56,6 +56,7 @@ public class Main {
 		ArrayList<ConnectivityNode> conNodeList = ConnectivityNode.getElements(connectivityNodeListEQ, voltListEQ); // Connectivity Nodes
 		ArrayList<ShuntCompensator> shuntCompensatorList = ShuntCompensator.getElements(shuntCompensatorListEQ); // Linear Shunt Compensators
 		ArrayList<BusBarSection> busbarList = BusBarSection.getElements(busbarListEQ); // BusBar Section
+		
 		ArrayList<ACLineSegment> lineSegmentList = ACLineSegment.getElements(lineSegmentACListEQ, baseVoltList, Sbase.Smax(syncMachList)); // AC Line Segment
 		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, Sbase.Smax(syncMachList)); // Power Transformer Ends (Transformer Windings)
 		

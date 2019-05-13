@@ -90,8 +90,6 @@ public class Breaker {
 				String rdfSSH = eElementSSH.getAttribute("rdf:about").substring(1);
 				
 				if (rdfID.equals(rdfSSH)) {
-					
-					//System.out.println(rdfID + " is equal to " + rdfSSH); // For testing
 										
 					Breaker breaker = new Breaker(eElementEQ,eElementSSH,voltListEQ);
 					
