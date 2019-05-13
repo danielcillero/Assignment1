@@ -13,57 +13,42 @@ public class Ybus {
 		this.ToBus = ToBus;
 		this.Admittance = Admittance;
 	}
-	
-	public static void printYBusMatrix(ArrayList<Ybus> YbusMatrixElements, ArrayList<BusBarSection> busbarList) {
-							
-		Complex[][] matrix = new Complex[busbarList.size()][busbarList.size()];
 		
-		for (int i=0 ; i<busbarList.size() ; i++) {
-			
-			int j = 0;
-			
-			int bus = i+1;
-			
-			System.out.println("Array Bus " + bus);
-			
-			for (Ybus ybus:YbusMatrixElements) {
-								
-				if (ybus.FromBus.equals(busbarList.get(i).ID) && !ybus.FromBus.equals(ybus.ToBus)) {
-					
-					matrix[i][j] = ybus.Admittance;
-					
-					System.out.println(matrix[i][j] + " ");
-					
-					j = j+1;
+	public static ArrayList<BusBarSection> realBuses (ArrayList<BusBarSection> busbarList, ArrayList<Topology> topologyElements) {
+		
+		ArrayList<BusBarSection> realbusbarList = new ArrayList<>();
+		
+		for (BusBarSection busbar:busbarList) {
+			for (Topology topo:topologyElements) {
+				if (busbar.ID.equals(topo.IDBusBar1) || busbar.ID.equals(topo.IDBusBar2)) {
+					if (realbusbarList.isEmpty()) {
+						realbusbarList.add(busbar);
+						break;
+					} else {
+						for (BusBarSection realbusbar:realbusbarList) {
+							if (!busbar.ID.equals(realbusbar.ID)) {
+								realbusbarList.add(busbar);
+								break;
+							}
+						}
 						
-				} else if(ybus.FromBus.equals(busbarList.get(i).ID) && ybus.FromBus.equals(ybus.ToBus)) {
-					
-					matrix[i][i] = ybus.Admittance;
-					
+						break;
+					}					
 				}
-				
-				if (j == i) {
-					j = j+1;
-					
-					System.out.println(matrix[i][i] + " ");
-				}
-								
 			}
-			
-			System.out.println();
-			
 		}
-        
+		
+		return realbusbarList;
 	}
 	
-	public static ArrayList<Ybus> createYbusMatrix (ArrayList<BusBarSection> busbarList, ArrayList<Topology> topologyElements, ArrayList<ACLineSegment> lineSegmentList,
+	public static ArrayList<Ybus> createYbusMatrix (ArrayList<BusBarSection> realbusbarList, ArrayList<Topology> topologyElements, ArrayList<ACLineSegment> lineSegmentList,
 			ArrayList<PowerTransformerEnd> powerTransformerEndList){
 		
 		ArrayList<Ybus> YbusMatrixElements = new ArrayList<>();
 		
 		// Diagonal Ybus Matrix Elements calculation
 		
-		for (BusBarSection busbar:busbarList) {
+		for (BusBarSection busbar:realbusbarList) {
 			
 			ArrayList<Complex> Admittance = new ArrayList<>();
 			Complex TotalAdmittance = new Complex(0,0);
@@ -115,9 +100,9 @@ public class Ybus {
 		
 		// Non-diagonal Ybus matrix elements calculation
 		
-		for (BusBarSection busbar1:busbarList) {
+		for (BusBarSection busbar1:realbusbarList) {
 			
-			for (BusBarSection busbar2:busbarList) {
+			for (BusBarSection busbar2:realbusbarList) {
 				
 				ArrayList<Complex> Admittance = new ArrayList<>();
 				Complex TotalAdmittance = new Complex(0,0);
@@ -167,6 +152,48 @@ public class Ybus {
 		}
 		
 		return YbusMatrixElements;
+	}
+	
+	public static void printYBusMatrix(ArrayList<Ybus> YbusMatrixElements, ArrayList<BusBarSection> realbusbarList) {
+		
+		Complex[][] matrix = new Complex[realbusbarList.size()][realbusbarList.size()];
+		
+		for (int i=0 ; i<realbusbarList.size() ; i++) {
+			
+			int j = 0;
+			
+			int bus = i+1;
+			
+			System.out.println("Array Bus " + bus);
+			
+			for (Ybus ybus:YbusMatrixElements) {
+								
+				if (ybus.FromBus.equals(realbusbarList.get(i).ID) && !ybus.FromBus.equals(ybus.ToBus)) {
+					
+					matrix[i][j] = ybus.Admittance;
+					
+					System.out.println(matrix[i][j] + " ");
+					
+					j = j+1;
+						
+				} else if(ybus.FromBus.equals(realbusbarList.get(i).ID) && ybus.FromBus.equals(ybus.ToBus)) {
+					
+					matrix[i][i] = ybus.Admittance;
+					
+				}
+				
+				if (j == i) {
+					j = j+1;
+					
+					System.out.println(matrix[i][i] + " ");
+				}
+								
+			}
+			
+			System.out.println();
+			
+		}
+        
 	}
 
 }

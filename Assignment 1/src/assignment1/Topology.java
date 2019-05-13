@@ -18,7 +18,8 @@ public class Topology {
 		}
 
 	public static ArrayList<Topology> getElements (ArrayList<ACLineSegment> lineSegmentList, ArrayList<Terminal> terminalList, ArrayList<ConnectivityNode> conNodeList, ArrayList<Breaker> breakerList, 
-			ArrayList<BusBarSection> busbarList, ArrayList<PowerTransformer> powerTransformerList, ArrayList<PowerTransformerEnd> powerTransformerEndList){
+			ArrayList<BusBarSection> busbarList, ArrayList<PowerTransformer> powerTransformerList, ArrayList<PowerTransformerEnd> powerTransformerEndList, 
+			ArrayList<SyncMachine> syncMachList, ArrayList<ShuntCompensator> shuntList, ArrayList<EnergyConsumerLoad> loadList){
 		
 		ArrayList<Topology> topologyElements = new ArrayList<>();
 		
@@ -76,8 +77,42 @@ public class Topology {
 											for (BusBarSection busbar:busbarList) {
 																				
 											if (terminal2.ConductingEquipment.equals(busbar.ID)) {
+												
+												for (Terminal terminal3:terminalList) {
+													
+													if (terminal3.ConnectivityNode.equals(node1.ID) && !terminal3.equals(terminal1) 
+														&& !terminal3.equals(terminal2)) {
+														
+														for (SyncMachine sync:syncMachList) {
+															
+															if (sync.ID.equals(terminal3.ConductingEquipment)) {
+																busIDs.add(busbar.ID);
+																
+																break;
+															}
+														}
+														
+														for (ShuntCompensator shunt:shuntList) {
+															
+															if (shunt.ID.equals(terminal3.ConductingEquipment)) {
+																busIDs.add(busbar.ID);
+																
+																break;
+															}
+														}
+														
+														for (EnergyConsumerLoad load:loadList) {
+															
+															if (load.ID.equals(terminal3.ConductingEquipment)) {
+																busIDs.add(busbar.ID);
+																
+																break;
+															}
+														}
+													} 
+												}
 										
-												busIDs.add(busbar.ID);												
+																								
 												}
 											}
 										}
