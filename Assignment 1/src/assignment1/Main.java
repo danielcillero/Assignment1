@@ -120,28 +120,27 @@ public class Main {
 		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, maxS);
 			
 		// Topology creation from Topology class
-		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, powerTransformerList, powerTransformerEndList);
+		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, 
+				powerTransformerList, powerTransformerEndList, syncMachList, shuntCompensatorList, loadList);
 				
+		// Create List of Real BusBars
+		ArrayList<BusBarSection> realbusbarList = Ybus.realBuses(busbarList, topologyElements);
 		
 		// Ybus matrix creation from Ybus class
-		ArrayList<Ybus> YbusMatrixElements = Ybus.createYbusMatrix(busbarList, topologyElements, lineSegmentList, powerTransformerEndList);
+		ArrayList<Ybus> YbusMatrixElements = Ybus.createYbusMatrix(realbusbarList, topologyElements, lineSegmentList, powerTransformerEndList);
 		
-		// YbusMatrix test
+		// Print YbusMatrix
+		Complex[][] YbusMatrix = Ybus.YBusMatrix(YbusMatrixElements, realbusbarList);
 		
-		Ybus.printYBusMatrix(YbusMatrixElements, busbarList);
 		
 		
 		// Database creation.
 		DatabaseCreation.createDatabase(lineSegmentList, baseVoltList, breakerList, busbarList, conNodeList, loadList,
 				genUnitList, powerTransformerList, powerTransformerEndList, ratioTapChangerList, regulControlList,
-				shuntCompensatorList, subList, syncMachList, terminalList, voltLevelList, YbusMatrixElements);
+				shuntCompensatorList, subList, syncMachList, terminalList, voltLevelList, YbusMatrixElements,YbusMatrix);
 		
 	}
 
 }
-
-
-
-
 
 

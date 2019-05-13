@@ -28,7 +28,7 @@ public class DatabaseCreation {
 			ArrayList<PowerTransformerEnd> powerTransformerEndList, ArrayList<RatioTapChanger> ratioTapChangerList,
 			ArrayList<RegulatingControl> regulControlList, ArrayList<ShuntCompensator> shuntCompensatorList, ArrayList<Substation> subList,
 			ArrayList<SyncMachine> syncMachList, ArrayList<Terminal> terminalList, ArrayList<VoltageLevel> voltLevelList, 
-			ArrayList<Ybus> YbusMatrixElements) {
+			ArrayList<Ybus> YbusMatrixElements, Complex[][] YbusMatrix) {
 		
 		Connection conn = null;
 		Statement stmt = null;
@@ -342,6 +342,25 @@ public class DatabaseCreation {
 						"','" + ybusElement.Admittance.toString() + "')"); 
 			}
 			System.out.println("Inserted records into YbusMatrix table...");
+			
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			
+			//YbusMatrix TABLE 2
+			// Create Table with corresponding columns
+			stmt.executeUpdate("CREATE TABLE YbusMatrix2 (Bus1 VARCHAR(50), Bus2 VARCHAR(50), Bus3 VARCHAR(50), "
+					+ "Bus4 VARCHAR(50), Bus5 VARCHAR(50) )");
+			
+			System.out.println("Created YbusMatrix2 table in given database successfully...");
+			
+			// Insert values into the table
+			for (int i=0; i<YbusMatrix.length; i++){
+				
+				stmt.executeUpdate("INSERT INTO YbusMatrix2 VALUES('" + YbusMatrix[i][0].toString() + "','" + YbusMatrix[i][1].toString() + 
+						"','" + YbusMatrix[i][2].toString() + "','" + YbusMatrix[i][3].toString() + "','" + YbusMatrix[i][4].toString() + "')");
+				 
+			}
+			System.out.println("Inserted records into YbusMatrix2 table...");
 			
 			///////////////////////////////////////////////////////////////////////////////////////////////////
 			
