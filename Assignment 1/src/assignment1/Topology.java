@@ -124,8 +124,17 @@ public class Topology {
 				}
 			}
 			
-			Topology topo = new Topology("AC Line", line.ID, busIDs.get(0), busIDs.get(1));
-			topologyElements.add(topo);
+			if (busIDs.size()==1){
+				Topology topo = new Topology("AC Line", line.ID, busIDs.get(0), null);
+				topologyElements.add(topo);
+				
+			}else if (busIDs.isEmpty()) {
+				
+			} else {			
+				Topology topo = new Topology("AC Line", line.ID, busIDs.get(0), busIDs.get(1));
+				topologyElements.add(topo);
+			}
+			
 		}
 		
 		for (PowerTransformer trans:powerTransformerList) {
@@ -201,8 +210,18 @@ public class Topology {
 				}
 			}
 			
-			Topology topo = new Topology("Transformer", trans.ID, busIDs.get(0), busIDs.get(1));
-			topologyElements.add(topo);
+			if (busIDs.size()==1){
+				Topology topo = new Topology("Transformer", trans.ID, busIDs.get(0), null);
+				topologyElements.add(topo);
+				
+			}else if (busIDs.isEmpty()) {
+				
+			} else {
+				Topology topo = new Topology("Transformer", trans.ID, busIDs.get(0), busIDs.get(1));
+				topologyElements.add(topo);
+			}
+			
+			
 		}
 		
 		return topologyElements;

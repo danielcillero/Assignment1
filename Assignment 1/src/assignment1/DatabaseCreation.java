@@ -330,37 +330,55 @@ public class DatabaseCreation {
 			///////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			
-			//YbusMatrix TABLE
+			//YbusElements TABLE
 			// Create Table with corresponding columns
-			stmt.executeUpdate("CREATE TABLE YbusMatrix (FromBus VARCHAR(50), ToBus VARCHAR(50), Admittance VARCHAR(50) )");
+			stmt.executeUpdate("CREATE TABLE YbusElements (FromBus VARCHAR(50), ToBus VARCHAR(50), Admittance VARCHAR(50) )");
 			
-			System.out.println("Created YbusMatrix table in given database successfully...");
+			System.out.println("Created YbusElements table in given database successfully...");
 			
 			// Insert values into the table
 			for (Ybus ybusElement:YbusMatrixElements){
-				stmt.executeUpdate("INSERT INTO YbusMatrix VALUES('" + ybusElement.FromBus + "','" + ybusElement.ToBus + 
+				stmt.executeUpdate("INSERT INTO YbusElements VALUES('" + ybusElement.FromBus + "','" + ybusElement.ToBus + 
 						"','" + ybusElement.Admittance.toString() + "')"); 
 			}
-			System.out.println("Inserted records into YbusMatrix table...");
+			System.out.println("Inserted records into YbusElements table...");
 			
 			///////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			
-			//YbusMatrix TABLE 2
+			//YbusMatrix TABLE
 			// Create Table with corresponding columns
-			stmt.executeUpdate("CREATE TABLE YbusMatrix2 (Bus1 VARCHAR(50), Bus2 VARCHAR(50), Bus3 VARCHAR(50), "
-					+ "Bus4 VARCHAR(50), Bus5 VARCHAR(50) )");
-			
-			System.out.println("Created YbusMatrix2 table in given database successfully...");
-			
-			// Insert values into the table
-			for (int i=0; i<YbusMatrix.length; i++){
+			if (YbusMatrix.length==5){
+				stmt.executeUpdate("CREATE TABLE YbusMatrix (Bus1 VARCHAR(50), Bus2 VARCHAR(50), Bus3 VARCHAR(50), "
+						+ "Bus4 VARCHAR(50), Bus5 VARCHAR(50) )");
 				
-				stmt.executeUpdate("INSERT INTO YbusMatrix2 VALUES('" + YbusMatrix[i][0].toString() + "','" + YbusMatrix[i][1].toString() + 
-						"','" + YbusMatrix[i][2].toString() + "','" + YbusMatrix[i][3].toString() + "','" + YbusMatrix[i][4].toString() + "')");
-				 
+				System.out.println("Created YbusMatrix table in given database successfully...");
+				
+				// Insert values into the table
+				for (int i=0; i<YbusMatrix.length; i++){
+					
+					stmt.executeUpdate("INSERT INTO YbusMatrix VALUES('" + YbusMatrix[i][0].toString() + "','" + YbusMatrix[i][1].toString() + 
+							"','" + YbusMatrix[i][2].toString() + "','" + YbusMatrix[i][3].toString() + "','" + YbusMatrix[i][4].toString() + "')");
+					 
+				}
+				
+			}else if (YbusMatrix.length==4){
+				stmt.executeUpdate("CREATE TABLE YbusMatrix (Bus1 VARCHAR(50), Bus2 VARCHAR(50), Bus3 VARCHAR(50), "
+						+ "Bus4 VARCHAR(50) )");
+				
+				System.out.println("Created YbusMatrix table in given database successfully...");
+				
+				// Insert values into the table
+				for (int i=0; i<YbusMatrix.length; i++){
+					
+					stmt.executeUpdate("INSERT INTO YbusMatrix VALUES('" + YbusMatrix[i][0].toString() + "','" + YbusMatrix[i][1].toString() + 
+							"','" + YbusMatrix[i][2].toString() + "','" + YbusMatrix[i][3].toString() + "')");
+					 
+				}
 			}
-			System.out.println("Inserted records into YbusMatrix2 table...");
+			
+			System.out.println("Inserted records into YbusMatrix table...");
+			
 			
 			///////////////////////////////////////////////////////////////////////////////////////////////////
 			
