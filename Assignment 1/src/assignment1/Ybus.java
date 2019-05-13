@@ -154,7 +154,7 @@ public class Ybus {
 		return YbusMatrixElements;
 	}
 	
-	public static void printYBusMatrix(ArrayList<Ybus> YbusMatrixElements, ArrayList<BusBarSection> realbusbarList) {
+	public static Complex[][] YBusMatrix(ArrayList<Ybus> YbusMatrixElements, ArrayList<BusBarSection> realbusbarList) {
 		
 		Complex[][] matrix = new Complex[realbusbarList.size()][realbusbarList.size()];
 		
@@ -193,7 +193,7 @@ public class Ybus {
 			System.out.println();
 			
 		}
-        
+		return matrix;
 	}
 
 }

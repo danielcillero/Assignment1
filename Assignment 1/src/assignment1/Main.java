@@ -130,20 +130,17 @@ public class Main {
 		ArrayList<Ybus> YbusMatrixElements = Ybus.createYbusMatrix(realbusbarList, topologyElements, lineSegmentList, powerTransformerEndList);
 		
 		// Print YbusMatrix
-		Ybus.printYBusMatrix(YbusMatrixElements, realbusbarList);
+		Complex[][] YbusMatrix = Ybus.YBusMatrix(YbusMatrixElements, realbusbarList);
+		
 		
 		
 		// Database creation.
 		DatabaseCreation.createDatabase(lineSegmentList, baseVoltList, breakerList, busbarList, conNodeList, loadList,
 				genUnitList, powerTransformerList, powerTransformerEndList, ratioTapChangerList, regulControlList,
-				shuntCompensatorList, subList, syncMachList, terminalList, voltLevelList, YbusMatrixElements);
+				shuntCompensatorList, subList, syncMachList, terminalList, voltLevelList, YbusMatrixElements,YbusMatrix);
 		
 	}
 
 }
-
-
-
-
 
 
