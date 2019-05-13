@@ -161,39 +161,47 @@ public class Ybus {
 		for (int i=0 ; i<realbusbarList.size() ; i++) {
 			
 			int j = 0;
-			
 			int bus = i+1;
-			
-			System.out.println("Array Bus " + bus);
 			
 			for (Ybus ybus:YbusMatrixElements) {
 								
 				if (ybus.FromBus.equals(realbusbarList.get(i).ID) && !ybus.FromBus.equals(ybus.ToBus)) {
 					
 					matrix[i][j] = ybus.Admittance;
-					
-					System.out.println(matrix[i][j] + " ");
-					
 					j = j+1;
 						
-				} else if(ybus.FromBus.equals(realbusbarList.get(i).ID) && ybus.FromBus.equals(ybus.ToBus)) {
+				} else if (ybus.FromBus.equals(realbusbarList.get(i).ID) && ybus.FromBus.equals(ybus.ToBus)) {
 					
 					matrix[i][i] = ybus.Admittance;
-					
 				}
 				
 				if (j == i) {
 					j = j+1;
-					
-					System.out.println(matrix[i][i] + " ");
-				}
-								
+				}				
 			}
-			
-			System.out.println();
-			
 		}
 		return matrix;
+	}
+	
+	
+	public static void printYbusMatrix (Complex[][] YbusMatrix){
+		
+		System.out.println();
+		System.out.println("The columns of the Ybus Matrix are the following:");
+		System.out.println();
+		
+		for (int i=0; i<YbusMatrix.length; i++){
+			
+			int bus1 = i+1;
+			System.out.println ("---- BUS " + bus1 + " ----");
+			
+			for (int j=0; j<YbusMatrix.length; j++){
+				
+				int bus2 = j+1;
+				System.out.println("Bus "+ bus2 + ":    " + YbusMatrix[j][i]);
+			}
+			System.out.println();
+		}
 	}
 
 }
