@@ -161,7 +161,6 @@ public class Ybus {
 		for (int i=0 ; i<realbusbarList.size() ; i++) {
 			
 			int j = 0;
-			int bus = i+1;
 			
 			for (Ybus ybus:YbusMatrixElements) {
 								
