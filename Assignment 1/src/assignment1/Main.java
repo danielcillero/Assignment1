@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		File EQFile = new File("MicroGridTestConfiguration_T1_BE_EQ_V2.xml");
-		File SSHFile = new File("MicroGridTestConfiguration_T1_BE_SSH_V2.xml");
+		File SSHFile = new File("MicroGridTestConfiguration_T1_BE_SSH_V2_modified.xml");
 		
 		Reader EQ = new Reader(EQFile,"EQ");
 		Reader SSH = new Reader(SSHFile,"SSH");
@@ -92,32 +92,15 @@ public class Main {
 				
 		// BusBar Section
 		
-		ArrayList<BusBarSection> busbarList = BusBarSection.getElements(busbarListEQ);
+		ArrayList<BusBarSection> busbarList = BusBarSection.getElements(busbarListEQ);		
 		
-		// For power transformer ends and AC lines we need the base power which will be the maximum S of all the Synchronous Machines
-		
-		ArrayList<Double> maxSList = new ArrayList<>();
-		
-		for (SyncMachine sync:syncMachList) {
-			
-			maxSList.add(sync.ratedS);
-		}
-		
-		Double maxS = 0.0;
-		
-		for (int i=0 ; i<maxSList.size() ; i++) {
-			
-			if (maxSList.get(i) > maxS) {
-				maxS = maxSList.get(i);
-			}
-		}
 		
 		// AC Line Segment
 		
-		ArrayList<ACLineSegment> lineSegmentList = ACLineSegment.getElements(lineSegmentACListEQ, baseVoltList, maxS);
+		ArrayList<ACLineSegment> lineSegmentList = ACLineSegment.getElements(lineSegmentACListEQ, baseVoltList, Sbase.Smax(syncMachList));
 		
 		// Power Transformer Ends (Transformer Windings)
-		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, maxS);
+		ArrayList<PowerTransformerEnd> powerTransformerEndList = PowerTransformerEnd.getElements(transfWindingListEQ, baseVoltList, Sbase.Smax(syncMachList));
 			
 		// Topology creation from Topology class
 		ArrayList<Topology> topologyElements = Topology.getElements(lineSegmentList, terminalList, conNodeList, breakerList, busbarList, 
